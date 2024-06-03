@@ -2,13 +2,12 @@ from pynput.keyboard import Listener
 from pynput import keyboard
 import keyboard as kdebug
 import pyautogui
-import constants
-
 pyautogui.useImageNotFoundException(False) # caso pyauto gui n ache n gera exception
 
 import threading
 
 from vida_mana import manager_supplies_rp
+import json
 
 # hotekeys in game
 RING_BOX = '1'
@@ -16,6 +15,11 @@ RING_LURANDO = '2'
 COMER_FOOD = '3'
 
 
+
+REGION_BATTLE = (1572,24,157,37)
+
+global event_th
+event_th = threading.Event()
 
 # while True:
 #     kdebug.wait('h')
@@ -27,15 +31,9 @@ def execute_hotkey(hotkey, delay = None):
         pyautogui.sleep(delay)
 
 LIST_HOTKEYS_ATTACK = [
-    
-    {"hotkey": 'g', "delay": 0.8, "descricao": "amp res"} , 
-    {"hotkey": 'o', "delay": 0.8, "descricao": "tapete"} , 
-    {"hotkey": 'p', "delay": 1, "descricao": "granada"} , 
-    # as habilidades da roda nao impactam as de ataque
-
+    {"hotkey": 'G', "delay": 1, "descricao": "amp res"} , 
     {"hotkey": 'F3', "delay": 2, "descricao": "mas san"} ,
-    {"hotkey": 'F6', "delay": 0.8, "descricao": "avalanche"},
-    #dps da ultima spell n precisa de delay
+    {"hotkey": 'F6', "delay": 2, "descricao": "avalanche"},
 ]
 
 def rotate_skills_attack():
@@ -44,29 +42,11 @@ def rotate_skills_attack():
             if event_rotate_skills.is_set():
                 return # caso acabe a box no meio n precisa terminar a rotacao
             
-            if pyautogui.locateOnScreen('battle_region.png', confidence=0.8, region=constants.REGION_BATTLE):
+            if pyautogui.locateOnScreen('battle_region.png', confidence=0.8, region=REGION_BATTLE):
                 # evita ficar castando magias se nao tiver mob na tela
                 # se der return ele sai da thread e para de rotacionar
                 continue
-
-            
-            
-            # se o quiver estiver vazio, refila ele
-            if pyautogui.locateOnScreen('quiver_vazio.png', confidence=0.8, region=constants.REGION_QUIVER):
-                # equipa mais felcha no quiver
-                # idealmente #TODO: checar se tem flechas pra equipar, se nao qndo tiver no final da hunt vai ficar spamando atoa
-                pyautogui.press('7')
-                pyautogui.press('7')
-                pyautogui.press('7')
-
-            #apenas come e bate utura gran qndo o icone de fome aparecer, evitar ficar spamando
-            if pyautogui.locateOnScreen('starving.png', confidence=0.8):
-                print("deveria bater as coisas")
-                pyautogui.press('9') # utura gran
-                pyautogui.press('0') # mushroom
-
-
-            pyautogui.press('esc') #tira o target pra sempre garantir bater no q ta mais perto
+            #pyautogui.press('esc') #tira o target pra sempre garantir bater no q ta mais perto
             pyautogui.press('space') # pra entre a rotação ele sempre ter um target
             execute_hotkey(attack['hotkey'], attack['delay'])
             
@@ -90,6 +70,9 @@ def key_code(key):
             event_supplies = threading.Event()
             th_supplies = threading.Thread(target=manager_supplies_rp, args=(event_supplies,)) # pq ta em outro arquivo tem q usar o args
             th_supplies.start()
+
+            th_run = threading.Thread(target=run)
+            th_run.start()
             
             execute_hotkey(RING_BOX)
             
@@ -104,9 +87,75 @@ def key_code(key):
             
             event_rotate_skills.set() #desabilita a rotacao de skills
             event_supplies.set() # desabilitia o monitoring de vida e mana
+            event_th.set()
+
 
             th_start_rotate_skills_attack.join()
             th_supplies.join()
+            th_run.join()
+
+import constants
+def check_player_position():
+    return pyautogui.locateOnScreen('imgs/char_map_position.png', confidence=0.8, region=constants.REGION_MAP)
+
+def go_to_flag(instructions):
+    try:
+        # reduzindo o escopo da busca pra ficar mais rapido
+        print('vai tentar localizar')
+        pyautogui.press('9') # utura gran
+        pyautogui.press('0') # mushroom
+        pyautogui.press('7') # equipa mais felcha no quiver
+        print(instructions)
+        print(instructions['path'])
+        flag = pyautogui.locateOnScreen(instructions['path'], 
+                                    confidence=0.8,
+                                    region=constants.REGION_MAP)
+        print(flag)
+        if not flag:
+            print("problema ao encontrar a flag")
+
+        print('encontrou vai buscar o centro')
+        x,y = pyautogui.center(flag)
+        print('vai mover o mouse para')
+        print(x,y)
+        pyautogui.moveTo(x,y)
+        
+        print('vai clicar')
+        pyautogui.click()
+
+        print('vai dormir')
+        pyautogui .sleep(instructions['wait'])
+    except Exception as e:
+        print('============')
+        print("erro no go_to_flag")
+        print(instructions)
+        print(e)
+        print('============')
+        #raise e
+
+
+def core(instruction):
+    print("\n\n\n\n\n============")
+    print(instruction)
+    
+    go_to_flag(instruction)
+    # se conseguir ver o crosshair branquinho tenta ir novamente
+    if check_player_position():
+        print("aparentemente ta preso, vai chamar dnv")
+        core(instruction)
+    
+
+def run():
+    with open('infos.json', 'r') as file:
+        data = json.loads(file.read())
+
+    while not event_th.is_set():
+        for item in data:
+            core(item)
 
 with Listener(on_press=key_code) as listener:
     listener.join()
+
+
+
+        
