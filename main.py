@@ -2,11 +2,13 @@ from pynput.keyboard import Listener
 from pynput import keyboard
 import keyboard as kdebug
 import pyautogui
+import constants
+
 pyautogui.useImageNotFoundException(False) # caso pyauto gui n ache n gera exception
 
 import threading
 
-from vida_mana import manager_supplies
+from vida_mana import manager_supplies_rp
 
 # hotekeys in game
 RING_BOX = '1'
@@ -14,8 +16,6 @@ RING_LURANDO = '2'
 COMER_FOOD = '3'
 
 
-
-REGION_BATTLE = (1572,24,157,37)
 
 # while True:
 #     kdebug.wait('h')
@@ -27,9 +27,15 @@ def execute_hotkey(hotkey, delay = None):
         pyautogui.sleep(delay)
 
 LIST_HOTKEYS_ATTACK = [
-    {"hotkey": 'G', "delay": 1, "descricao": "amp res"} , 
+    
+    {"hotkey": 'g', "delay": 0, "descricao": "amp res"} , 
+    {"hotkey": 'o', "delay": 0, "descricao": "tapete"} , 
+    {"hotkey": 'p', "delay": 1, "descricao": "granada"} , 
+    # as habilidades da roda nao impactam as de ataque
+
     {"hotkey": 'F3', "delay": 2, "descricao": "mas san"} ,
-    {"hotkey": 'F6', "delay": 2, "descricao": "avalanche"},
+    {"hotkey": 'F6', "delay": 0, "descricao": "avalanche"},
+    #dps da ultima spell n precisa de delay
 ]
 
 def rotate_skills_attack():
@@ -38,13 +44,23 @@ def rotate_skills_attack():
             if event_rotate_skills.is_set():
                 return # caso acabe a box no meio n precisa terminar a rotacao
             
-            if pyautogui.locateOnScreen('battle_region.png', confidence=0.8, region=REGION_BATTLE):
+            if pyautogui.locateOnScreen('battle_region.png', confidence=0.8, region=constants.REGION_BATTLE):
                 # evita ficar castando magias se nao tiver mob na tela
                 # se der return ele sai da thread e para de rotacionar
+                continue
+
+            # se o quiver nao estiver cheio, tenta apertar
+            # evitar ficar spamando pra colocar toda santa vez
+            if not pyautogui.locateOnScreen('quiver_cheio.png', confidence=0.8, region=constants.REGION_QUIVER):
+                pyautogui.press('7') # equipa mais felcha no quiver   
+
+            #apenas come e bate utura gran qndo o icone de fome aparecer, evitar ficar spamando
+            if pyautogui.locateOnScreen('starving.png', confidence=0.8):
+                print("deveria bater as coisas")
                 pyautogui.press('9') # utura gran
                 pyautogui.press('0') # mushroom
-                pyautogui.press('7') # equipa mais felcha no quiver
-                continue
+
+
             pyautogui.press('esc') #tira o target pra sempre garantir bater no q ta mais perto
             pyautogui.press('space') # pra entre a rotação ele sempre ter um target
             execute_hotkey(attack['hotkey'], attack['delay'])
@@ -67,7 +83,7 @@ def key_code(key):
             th_start_rotate_skills_attack.start()
 
             event_supplies = threading.Event()
-            th_supplies = threading.Thread(target=manager_supplies, args=(event_supplies,)) # pq ta em outro arquivo tem q usar o args
+            th_supplies = threading.Thread(target=manager_supplies_rp, args=(event_supplies,)) # pq ta em outro arquivo tem q usar o args
             th_supplies.start()
             
             execute_hotkey(RING_BOX)

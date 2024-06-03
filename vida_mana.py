@@ -43,13 +43,35 @@ def pixel_match_color(region, percent, color):
 
 
 
-def manager_supplies(event):
+def manager_supplies_rp(event):
     while not event.is_set():
         if event.is_set():
             return
+        
+        # TODO: evitar o tira e poe da thread
+        # fazer o esquema de localizar pra ver e o ring ja nao esta equipado
+        #qndo da caca ele sobe o energy, entao dps q tiver safe volta o prisma
+        # if not pixel_match_color(LIFE_REGION, 100, COR_VIDA):
+        #     pyautogui.press('4') # prismatic ring
 
-        if not pixel_match_color(LIFE_REGION, 70, COR_VIDA):
+        
+        if not pixel_match_color(LIFE_REGION, 95, COR_VIDA):
+            pyautogui.press('F1') # ligh heal
+            
+        elif not pixel_match_color(LIFE_REGION, 90, COR_VIDA):
+            pyautogui.press('F2') # gran san
+            
+
+        if not pixel_match_color(LIFE_REGION, 50, COR_VIDA):
             pyautogui.press('F5') # hp potion
+        
+        # botao do panico, sobe o energy ring
+        # TODO: aqui tambem garantir que ja nao ta o ring la
+        # pra evitar o tira e poe da thread
+        if not pixel_match_color(LIFE_REGION, 40, COR_VIDA):
+            pyautogui.press('3') # energy ring
+            # aqui geralmente n da  caca pq ele sobe o energt e a vida ja comeca a subir
+            # eh mais por precaução
         
         else:
             if not pixel_match_color(LIFE_REGION, 80, COR_VIDA):
