@@ -38,10 +38,6 @@ LIST_HOTKEYS_ATTACK = [
     #dps da ultima spell n precisa de delay
 ]
 
-
-
-
-
 def rotate_skills_attack():
     while not event_rotate_skills.is_set():
         for attack in LIST_HOTKEYS_ATTACK:

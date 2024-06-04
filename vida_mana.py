@@ -64,7 +64,7 @@ def manager_supplies_rp(event):
             
 
         if not pixel_match_color(LIFE_REGION, 50, COR_VIDA):
-            pyautogui.press('F12') # hp potion
+            pyautogui.press('F5') # hp potion f12 pro pot do ek
         
         # botao do panico, sobe o energy ring
         # TODO: aqui tambem garantir que ja nao ta o ring la
