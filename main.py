@@ -38,6 +38,10 @@ LIST_HOTKEYS_ATTACK = [
     #dps da ultima spell n precisa de delay
 ]
 
+
+
+
+
 def rotate_skills_attack():
     while not event_rotate_skills.is_set():
         for attack in LIST_HOTKEYS_ATTACK:
@@ -49,15 +53,14 @@ def rotate_skills_attack():
                 # se der return ele sai da thread e para de rotacionar
                 continue
 
-            
-            
-            # se o quiver estiver vazio, refila ele
-            if pyautogui.locateOnScreen('quiver_vazio.png', confidence=0.8, region=constants.REGION_QUIVER):
-                # equipa mais felcha no quiver
-                # idealmente #TODO: checar se tem flechas pra equipar, se nao qndo tiver no final da hunt vai ficar spamando atoa
-                pyautogui.press('7')
-                pyautogui.press('7')
-                pyautogui.press('7')
+            if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
+                # se o quiver estiver vazio, refila ele
+                if pyautogui.locateOnScreen('quiver_vazio.png', confidence=0.8, region=constants.REGION_QUIVER):
+                    # equipa mais felcha no quiver
+                    # idealmente #TODO: checar se tem flechas pra equipar, se nao qndo tiver no final da hunt vai ficar spamando atoa
+                    pyautogui.press('7')
+                    pyautogui.press('7')
+                    pyautogui.press('7')
 
             #apenas come e bate utura gran qndo o icone de fome aparecer, evitar ficar spamando
             if pyautogui.locateOnScreen('starving.png', confidence=0.8):
@@ -65,10 +68,10 @@ def rotate_skills_attack():
                 pyautogui.press('9') # utura gran
                 pyautogui.press('0') # mushroom
 
-
-            pyautogui.press('esc') #tira o target pra sempre garantir bater no q ta mais perto
-            pyautogui.press('space') # pra entre a rotação ele sempre ter um target
-            execute_hotkey(attack['hotkey'], attack['delay'])
+            if constants.VOCACAO_EM_USO != constants.Vocation.SOMENTE_HEAL:
+                pyautogui.press('esc') #tira o target pra sempre garantir bater no q ta mais perto
+                pyautogui.press('space') # pra entre a rotação ele sempre ter um target
+                execute_hotkey(attack['hotkey'], attack['delay'])
             
 
 running = False
@@ -85,7 +88,7 @@ def key_code(key):
             
             event_rotate_skills = threading.Event()
             th_start_rotate_skills_attack = threading.Thread(target=rotate_skills_attack)
-            th_start_rotate_skills_attack.start()
+            #th_start_rotate_skills_attack.start()
 
             event_supplies = threading.Event()
             th_supplies = threading.Thread(target=manager_supplies_rp, args=(event_supplies,)) # pq ta em outro arquivo tem q usar o args

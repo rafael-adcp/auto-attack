@@ -54,6 +54,7 @@ def manager_supplies_rp(event):
         # if not pixel_match_color(LIFE_REGION, 100, COR_VIDA):
         #     pyautogui.press('4') # prismatic ring
 
+        # TODO: criar uma mapping pras hoteksys do ek, e do rp
         
         if not pixel_match_color(LIFE_REGION, 95, COR_VIDA):
             pyautogui.press('F1') # ligh heal
@@ -63,7 +64,7 @@ def manager_supplies_rp(event):
             
 
         if not pixel_match_color(LIFE_REGION, 50, COR_VIDA):
-            pyautogui.press('F5') # hp potion
+            pyautogui.press('F12') # hp potion
         
         # botao do panico, sobe o energy ring
         # TODO: aqui tambem garantir que ja nao ta o ring la
