@@ -5,5 +5,5 @@ pip3 install pyautogui pillow opencv-python keyboard pynput pygetwindow
 
 pip3 install pynput
 
-python -m venv venv
-venv/Scripts/activate
+python -m venv venv2
+venv2/Scripts/activate

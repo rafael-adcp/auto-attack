@@ -1,5 +1,6 @@
 import pyautogui
 import keyboard as kdebug
+import constants
 
 # # # obtendo posicoes pixels e suas cores pras threads
 # kdebug.wait('h')
@@ -48,35 +49,51 @@ def manager_supplies_rp(event):
         if event.is_set():
             return
         
-        # TODO: evitar o tira e poe da thread
-        # fazer o esquema de localizar pra ver e o ring ja nao esta equipado
+        # TODO: mover esse bloco todo pra elif, pra sempre um ter prioridade
+        # pq n da pra potar mana e vida no mesmo cd
+        
+        
         #qndo da caca ele sobe o energy, entao dps q tiver safe volta o prisma
-        # if not pixel_match_color(LIFE_REGION, 100, COR_VIDA):
-        #     pyautogui.press('4') # prismatic ring
+        # se a vida for >= 90 e tiver com energy ring, remove ele
+        
+        if pixel_match_color(LIFE_REGION, 90, COR_VIDA) and pyautogui.locateOnScreen("energy_ring.png", confidence=0.99) != None:
+            print("tinha dado bosta ne amiguinho, agora q ta tudo bem vou tirar o energy ring e voltar pro prismatic")
+            pyautogui.press('4') # prismatic ring
 
         # TODO: criar uma mapping pras hoteksys do ek, e do rp
         
-        if not pixel_match_color(LIFE_REGION, 95, COR_VIDA):
-            pyautogui.press('F1') # ligh heal
+        if not pixel_match_color(LIFE_REGION, 80, COR_VIDA):
+            if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
+                pyautogui.press('F2') # gran san
+            else:
+                pyautogui.press('F1') # med ico
+        
+        elif not pixel_match_color(LIFE_REGION, 95, COR_VIDA):
+            if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
+                pyautogui.press('F1') # ligh heal
+            else:
+                pyautogui.press('F1') # med ico
             
-        elif not pixel_match_color(LIFE_REGION, 90, COR_VIDA):
-            pyautogui.press('F2') # gran san
+        
             
 
         if not pixel_match_color(LIFE_REGION, 50, COR_VIDA):
-            pyautogui.press('F5') # hp potion f12 pro pot do ek
+            if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
+                pyautogui.press('F5') # hp potion f12 pro pot do ek
+            else:
+                pyautogui.press('F12') # supreme
         
-        # botao do panico, sobe o energy ring
-        # TODO: aqui tambem garantir que ja nao ta o ring la
-        # pra evitar o tira e poe da thread
-        if not pixel_match_color(LIFE_REGION, 40, COR_VIDA):
-            pyautogui.press('3') # energy ring
-            # aqui geralmente n da  caca pq ele sobe o energt e a vida ja comeca a subir
-            # eh mais por precaução
-        
+        # botao do panico, sobe o energy ring se ja nao tiver com ele
+        if not pixel_match_color(LIFE_REGION, 40, COR_VIDA) and not pyautogui.locateOnScreen("energy_ring.png", confidence=0.9):
+            if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
+                print("deu caca, vou subir o energy ring")
+                pyautogui.press('3') # energy ring
+            
+            else: # se n for paladino da utamo tempo
+                print("vai utamar")
+                pyautogui.press('p') # utamo tempo
+
         else:
-            if not pixel_match_color(LIFE_REGION, 80, COR_VIDA):
-                pyautogui.press('F1') # light healing
 
             if not pixel_match_color(MANA_REGION, 80, COR_MANA):
                 pyautogui.press('F4') # pot de mana

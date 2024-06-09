@@ -10,11 +10,6 @@ import threading
 
 from vida_mana import manager_supplies_rp
 
-# hotekeys in game
-RING_BOX = '1'
-RING_LURANDO = '2'
-COMER_FOOD = '3'
-
 
 
 # while True:
@@ -26,21 +21,20 @@ def execute_hotkey(hotkey, delay = None):
     if delay:
         pyautogui.sleep(delay)
 
-LIST_HOTKEYS_ATTACK = [
-    
-    {"hotkey": 'g', "delay": 0.8, "descricao": "amp res"} , 
-    {"hotkey": 'o', "delay": 0.8, "descricao": "tapete"} , 
-    {"hotkey": 'p', "delay": 1, "descricao": "granada"} , 
-    # as habilidades da roda nao impactam as de ataque
-
-    {"hotkey": 'F3', "delay": 2, "descricao": "mas san"} ,
-    {"hotkey": 'F6', "delay": 0.8, "descricao": "avalanche"},
-    #dps da ultima spell n precisa de delay
-]
 
 def rotate_skills_attack():
+    list_hotkeys_para_usar = None
+    if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
+        list_hotkeys_para_usar = constants.LIST_HOTKEYS_ATTACK_PALADIN
+    elif constants.VOCACAO_EM_USO == constants.Vocation.EK_DUO:
+        list_hotkeys_para_usar = constants.LIST_HOTKEYS_ATTACK_KNIGH_DUO
+    elif constants.VOCACAO_EM_USO == constants.Vocation.EK_SOLO:
+        list_hotkeys_para_usar = constants.LIST_HOTKEYS_ATTACK_KNIGH_SEM_EXETA        
+
+    print("vai usar")
+    print(list_hotkeys_para_usar)
     while not event_rotate_skills.is_set():
-        for attack in LIST_HOTKEYS_ATTACK:
+        for attack in list_hotkeys_para_usar:
             if event_rotate_skills.is_set():
                 return # caso acabe a box no meio n precisa terminar a rotacao
             
@@ -51,22 +45,25 @@ def rotate_skills_attack():
 
             if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
                 # se o quiver estiver vazio, refila ele
-                if pyautogui.locateOnScreen('quiver_vazio.png', confidence=0.8, region=constants.REGION_QUIVER):
+                if pyautogui.locateOnScreen('quiver_vazio.png', confidence=0.98, region=constants.REGION_QUIVER):
                     # equipa mais felcha no quiver
                     # idealmente #TODO: checar se tem flechas pra equipar, se nao qndo tiver no final da hunt vai ficar spamando atoa
                     pyautogui.press('7')
                     pyautogui.press('7')
                     pyautogui.press('7')
 
-            #apenas come e bate utura gran qndo o icone de fome aparecer, evitar ficar spamando
+            #apenas come qndo o icone de fome aparecer, evitar ficar spamando
             if pyautogui.locateOnScreen('starving.png', confidence=0.8):
-                print("deveria bater as coisas")
-                pyautogui.press('9') # utura gran
                 pyautogui.press('0') # mushroom
+
+            # apenas usa utura gran, caso o icone nao esteja na barrinha de status
+            if not pyautogui.locateOnScreen('utura_gran.png', confidence=0.98):
+                pyautogui.press('9') # utura gran
 
             if constants.VOCACAO_EM_USO != constants.Vocation.SOMENTE_HEAL:
                 pyautogui.press('esc') #tira o target pra sempre garantir bater no q ta mais perto
                 pyautogui.press('space') # pra entre a rotação ele sempre ter um target
+                #print(f"vai usar: ", attack['descricao'])
                 execute_hotkey(attack['hotkey'], attack['delay'])
             
 
@@ -84,22 +81,15 @@ def key_code(key):
             
             event_rotate_skills = threading.Event()
             th_start_rotate_skills_attack = threading.Thread(target=rotate_skills_attack)
-            #th_start_rotate_skills_attack.start()
+            th_start_rotate_skills_attack.start()
 
             event_supplies = threading.Event()
             th_supplies = threading.Thread(target=manager_supplies_rp, args=(event_supplies,)) # pq ta em outro arquivo tem q usar o args
             th_supplies.start()
             
-            execute_hotkey(RING_BOX)
-            
-
-            
-            
         else:
             running = False
             print("parando rotacao de skills")
-            execute_hotkey(RING_LURANDO)
-            execute_hotkey(COMER_FOOD)
             
             event_rotate_skills.set() #desabilita a rotacao de skills
             event_supplies.set() # desabilitia o monitoring de vida e mana
