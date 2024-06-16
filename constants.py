@@ -27,7 +27,7 @@ LIST_HOTKEYS_ATTACK_PALADIN = [
     # as habilidades da roda nao impactam as de ataque
 
     {"hotkey": 'F3', "delay": 2, "descricao": "mas san"} ,
-    {"hotkey": 'F6', "delay": 0.8, "descricao": "avalanche"},
+    {"hotkey": 'F6', "delay": 2, "descricao": "avalanche"}, # 0.8 eh so qndo tem o amp res
     #dps da ultima spell n precisa de delay
 ]
 

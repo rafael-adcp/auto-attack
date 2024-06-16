@@ -62,7 +62,7 @@ def manager_supplies_rp(event):
 
         # TODO: criar uma mapping pras hoteksys do ek, e do rp
         
-        if not pixel_match_color(LIFE_REGION, 80, COR_VIDA):
+        if not pixel_match_color(LIFE_REGION, 90, COR_VIDA):
             if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
                 pyautogui.press('F2') # gran san
             else:
@@ -82,13 +82,27 @@ def manager_supplies_rp(event):
                 pyautogui.press('F5') # hp potion f12 pro pot do ek
             else:
                 pyautogui.press('F12') # supreme
-        
-        # botao do panico, sobe o energy ring se ja nao tiver com ele
-        if not pixel_match_color(LIFE_REGION, 40, COR_VIDA) and not pyautogui.locateOnScreen("energy_ring.png", confidence=0.9):
+
+        # botao do panico
+        if not pixel_match_color(LIFE_REGION, 45, COR_VIDA):
             if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
-                print("deu caca, vou subir o energy ring")
-                pyautogui.press('3') # energy ring
-            
+
+                # apenas swapa pro energy ring se tiver mana, pq se a mana tiver baixa vai da bosta
+                if  pixel_match_color(MANA_REGION, 40, COR_MANA) and not pyautogui.locateOnScreen("energy_ring.png", confidence=0.9):
+                    print("deu caca, vou subir o energy ring")
+                    pyautogui.press('3') # energy ring
+                else:
+                    #swap ssa / might ring
+                    print("meu deus do ceu maggy onde foi que voce meteu a gente")
+                    
+                    if not pyautogui.locateOnScreen("might_ring_equipped.png", confidence=0.9):
+                        pyautogui.press('5') # might ring
+                        print("olha o anel")
+                    
+                    if not pyautogui.locateOnScreen("ssa_equipped.png", confidence=0.9):
+                        pyautogui.press('6') # SSA
+                        print("olha o amuleto")
+                
             else: # se n for paladino da utamo tempo
                 print("vai utamar")
                 pyautogui.press('p') # utamo tempo

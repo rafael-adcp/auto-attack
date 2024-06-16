@@ -33,7 +33,7 @@ def rotate_skills_attack():
 
     print("vai usar")
     print(list_hotkeys_para_usar)
-    while not event_rotate_skills.is_set():
+    while not event_rotate_skills.is_set() and list_hotkeys_para_usar != None:
         for attack in list_hotkeys_para_usar:
             if event_rotate_skills.is_set():
                 return # caso acabe a box no meio n precisa terminar a rotacao
