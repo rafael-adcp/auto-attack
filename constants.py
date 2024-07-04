@@ -7,7 +7,10 @@ REGION_BATTLE = (1572,24,157,37)
 # encontrar_posicao_mini_mapa retornar a posicao
 REGION_MAP = (1748, 24,116,114)
 
+
+# RP CONFIGS
 REGION_QUIVER = (1825, 188, 40, 42)
+MANA_PCT_FOR_ENERYING = 40
 
 
 class Vocation(Enum):
@@ -21,13 +24,15 @@ VOCACAO_EM_USO = Vocation.PALADIN
 
 LIST_HOTKEYS_ATTACK_PALADIN = [
     
-    #{"hotkey": 'g', "delay": 0.8, "descricao": "amp res"} , 
+    {"hotkey": 'g', "delay": 0.8, "descricao": "amp res"} , 
     {"hotkey": 'o', "delay": 0.8, "descricao": "tapete"} , 
     {"hotkey": 'p', "delay": 1, "descricao": "granada"} , 
     # as habilidades da roda nao impactam as de ataque
 
     {"hotkey": 'F3', "delay": 2, "descricao": "mas san"} ,
-    {"hotkey": 'F6', "delay": 2, "descricao": "avalanche"}, # 0.8 eh so qndo tem o amp res
+    {"hotkey": 'F6', "delay": 0.8, "descricao": "avalanche"}, 
+        # 0.8 eh so qndo tem o amp res
+        # 2 eh qndo n usa ampres
     #dps da ultima spell n precisa de delay
 ]
 

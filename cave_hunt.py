@@ -31,9 +31,9 @@ def execute_hotkey(hotkey, delay = None):
         pyautogui.sleep(delay)
 
 LIST_HOTKEYS_ATTACK = [
-    {"hotkey": 'G', "delay": 1, "descricao": "amp res"} , 
-    {"hotkey": 'F3', "delay": 2, "descricao": "mas san"} ,
-    {"hotkey": 'F6', "delay": 2, "descricao": "avalanche"},
+    {"hotkey": 'f3', "delay": 1, "descricao": "amp res"} , 
+    #{"hotkey": 'F3', "delay": 2, "descricao": "mas san"} ,
+    #{"hotkey": 'F6', "delay": 2, "descricao": "avalanche"},
 ]
 
 def rotate_skills_attack():
@@ -82,8 +82,6 @@ def key_code(key):
         else:
             running = False
             print("parando rotacao de skills")
-            execute_hotkey(RING_LURANDO)
-            execute_hotkey(COMER_FOOD)
             
             event_rotate_skills.set() #desabilita a rotacao de skills
             event_supplies.set() # desabilitia o monitoring de vida e mana
@@ -102,9 +100,8 @@ def go_to_flag(instructions):
     try:
         # reduzindo o escopo da busca pra ficar mais rapido
         print('vai tentar localizar')
-        pyautogui.press('9') # utura gran
-        pyautogui.press('0') # mushroom
         pyautogui.press('7') # equipa mais felcha no quiver
+
         print(instructions)
         print(instructions['path'])
         flag = pyautogui.locateOnScreen(instructions['path'], 
@@ -113,18 +110,19 @@ def go_to_flag(instructions):
         print(flag)
         if not flag:
             print("problema ao encontrar a flag")
+        else:
+            print('encontrou vai buscar o centro')
+            x,y = pyautogui.center(flag)
+            print('vai mover o mouse para')
+            print(x,y)
+            pyautogui.moveTo(x,y)
+            
+            print('vai clicar')
+            pyautogui.click()
 
-        print('encontrou vai buscar o centro')
-        x,y = pyautogui.center(flag)
-        print('vai mover o mouse para')
-        print(x,y)
-        pyautogui.moveTo(x,y)
-        
-        print('vai clicar')
-        pyautogui.click()
-
-        print('vai dormir')
-        pyautogui .sleep(instructions['wait'])
+            if flag: # apenas dorme se achar pra evitar delay ao começar no meio da cave
+                print('vai dormir')
+                pyautogui.sleep(instructions['wait'])
     except Exception as e:
         print('============')
         print("erro no go_to_flag")
@@ -142,7 +140,7 @@ def core(instruction):
     # se conseguir ver o crosshair branquinho tenta ir novamente
     if check_player_position():
         print("aparentemente ta preso, vai chamar dnv")
-        core(instruction)
+        go_to_flag(instruction)
     
 
 def run():

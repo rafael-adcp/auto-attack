@@ -79,7 +79,7 @@ def manager_supplies_rp(event):
 
         if not pixel_match_color(LIFE_REGION, 50, COR_VIDA):
             if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
-                pyautogui.press('F5') # hp potion f12 pro pot do ek
+                pyautogui.press('F5') # hp potion ultimate spirit potion
             else:
                 pyautogui.press('F12') # supreme
 
@@ -88,10 +88,10 @@ def manager_supplies_rp(event):
             if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
 
                 # apenas swapa pro energy ring se tiver mana, pq se a mana tiver baixa vai da bosta
-                if  pixel_match_color(MANA_REGION, 40, COR_MANA) and not pyautogui.locateOnScreen("energy_ring.png", confidence=0.9):
+                if  pixel_match_color(MANA_REGION, constants.MANA_PCT_FOR_ENERYING, COR_MANA) and not pyautogui.locateOnScreen("energy_ring.png", confidence=0.9):
                     print("deu caca, vou subir o energy ring")
                     pyautogui.press('3') # energy ring
-                else:
+                else: # TODO: testar isso aqui na posta de haleluja com as true asura, colocar um if FALSE ali em cima ou so omitir o pot de sp
                     #swap ssa / might ring
                     print("meu deus do ceu maggy onde foi que voce meteu a gente")
                     
@@ -108,6 +108,10 @@ def manager_supplies_rp(event):
                 pyautogui.press('p') # utamo tempo
 
         else:
-
-            if not pixel_match_color(MANA_REGION, 80, COR_MANA):
+            if not pixel_match_color(MANA_REGION, constants.MANA_PCT_FOR_ENERYING, COR_MANA):
+                pyautogui.press('F5')
+                print("ta negativando")
+                # se a mana ta abaixo de 50 ele ja ta na merda com enery ring ou swapando ssa e subindo might, fora q ta batendo gran san
+                # entao pra nao negativar a mana bate o ultimate spirit
+            elif not pixel_match_color(MANA_REGION, 80, COR_MANA):
                 pyautogui.press('F4') # pot de mana
