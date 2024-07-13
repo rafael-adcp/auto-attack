@@ -108,7 +108,7 @@ def manager_supplies_rp(event):
                 pyautogui.press('p') # utamo tempo
 
         else:
-            if not pixel_match_color(MANA_REGION, constants.MANA_PCT_FOR_ENERYING, COR_MANA):
+            if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN and not pixel_match_color(MANA_REGION, constants.MANA_PCT_FOR_ENERYING, COR_MANA):
                 pyautogui.press('F5')
                 print("ta negativando")
                 # se a mana ta abaixo de 50 ele ja ta na merda com enery ring ou swapando ssa e subindo might, fora q ta batendo gran san

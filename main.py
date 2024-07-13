@@ -60,9 +60,17 @@ def rotate_skills_attack():
             if not pyautogui.locateOnScreen('utura_gran.png', confidence=0.98):
                 pyautogui.press('9') # utura gran
 
+            if not pyautogui.locateOnScreen('haste.png', confidence=0.98):
+                pyautogui.press('f10') # utani hur
+
             if constants.VOCACAO_EM_USO != constants.Vocation.SOMENTE_HEAL:
-                pyautogui.press('esc') #tira o target pra sempre garantir bater no q ta mais perto
-                pyautogui.press('space') # pra entre a rotação ele sempre ter um target
+                # ensure we only hit space whenever we are not targetting something, this prevents wasting an attack turn
+                
+                if pyautogui.locateOnScreen("something_targeted.png",  confidence=0.99) is None:
+                    # ensures we are always targeting the closest mob to us
+                    pyautogui.press('esc')
+                    pyautogui.press('space')
+            
                 #print(f"vai usar: ", attack['descricao'])
                 execute_hotkey(attack['hotkey'], attack['delay'])
             
