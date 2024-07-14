@@ -1,7 +1,8 @@
 from enum import Enum
 REGION_BATTLE = (1572,24,157,37)
 
-
+HOTKEY_RING_DEFAULT = '4'
+HOTKEY_NECKLACE_DEFAULT = '7'
 
 
 # encontrar_posicao_mini_mapa retornar a posicao

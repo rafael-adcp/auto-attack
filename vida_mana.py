@@ -53,15 +53,22 @@ def manager_supplies_rp(event):
         # pq n da pra potar mana e vida no mesmo cd
         
         
-        #qndo da caca ele sobe o energy, entao dps q tiver safe volta o prisma
+        #qndo da caca ele sobe o energy, entao dps q tiver safe volta o prisma e tb pode swapar ssa / might ring
         # se a vida for >= 90 e tiver com energy ring, remove ele
         
-        if pixel_match_color(LIFE_REGION, 90, COR_VIDA) and pyautogui.locateOnScreen("energy_ring.png", confidence=0.99) != None:
-            print("tinha dado bosta ne amiguinho, agora q ta tudo bem vou tirar o energy ring e voltar pro prismatic")
-            pyautogui.press('4') # prismatic ring
+        if pixel_match_color(LIFE_REGION, 90, COR_VIDA):
+            if pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.99) != None:
+                print("tinha dado bosta ne amiguinho, agora q ta tudo bem vou tirar o energy ring e voltar pro prismatic")
+                pyautogui.press(constants.HOTKEY_RING_DEFAULT)
+            
+            if pyautogui.locateOnScreen('imgs/no_necklace_equipped.png', confidence=0.99) != None:
+                print("tava sem neck, vai colcoar")
+                pyautogui.press(constants.HOTKEY_NECKLACE_DEFAULT)
 
-        # TODO: criar uma mapping pras hoteksys do ek, e do rp
-        
+            if pyautogui.locateOnScreen('imgs/no_ring_equipped.png', confidence=0.99) != None:
+                print("tava sem ring, vai colcoar")
+                pyautogui.press(constants.HOTKEY_RING_DEFAULT)
+
         if not pixel_match_color(LIFE_REGION, 90, COR_VIDA):
             if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
                 pyautogui.press('F2') # gran san
@@ -88,18 +95,18 @@ def manager_supplies_rp(event):
             if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
 
                 # apenas swapa pro energy ring se tiver mana, pq se a mana tiver baixa vai da bosta
-                if  pixel_match_color(MANA_REGION, constants.MANA_PCT_FOR_ENERYING, COR_MANA) and not pyautogui.locateOnScreen("energy_ring.png", confidence=0.9):
+                if  pixel_match_color(MANA_REGION, constants.MANA_PCT_FOR_ENERYING, COR_MANA) and not pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.9):
                     print("deu caca, vou subir o energy ring")
                     pyautogui.press('3') # energy ring
                 else: # TODO: testar isso aqui na posta de haleluja com as true asura, colocar um if FALSE ali em cima ou so omitir o pot de sp
                     #swap ssa / might ring
                     print("meu deus do ceu maggy onde foi que voce meteu a gente")
                     
-                    if not pyautogui.locateOnScreen("might_ring_equipped.png", confidence=0.9):
+                    if not pyautogui.locateOnScreen('imgs/might_ring_equipped.png', confidence=0.9):
                         pyautogui.press('5') # might ring
                         print("olha o anel")
                     
-                    if not pyautogui.locateOnScreen("ssa_equipped.png", confidence=0.9):
+                    if not pyautogui.locateOnScreen('imgs/ssa_equipped.png', confidence=0.9):
                         pyautogui.press('6') # SSA
                         print("olha o amuleto")
                 

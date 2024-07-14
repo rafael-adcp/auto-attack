@@ -14,7 +14,7 @@ from vida_mana import manager_supplies_rp
 
 # while True:
 #     kdebug.wait('h')
-#     print(pyautogui.locateOnScreen('battle_region.png', confidence=0.8))
+#     print(pyautogui.locateOnScreen('imgs/battle_region.png', confidence=0.8))
 
 def execute_hotkey(hotkey, delay = None):
     pyautogui.press(hotkey)
@@ -35,38 +35,42 @@ def rotate_skills_attack():
     print(list_hotkeys_para_usar)
     while not event_rotate_skills.is_set() and list_hotkeys_para_usar != None:
         for attack in list_hotkeys_para_usar:
+
+            # bellow actions should happen regardless if there are monsters or not
+            if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
+                # se o quiver estiver vazio, refila ele
+                if pyautogui.locateOnScreen('imgs/quiver_vazio.png', confidence=0.98, region=constants.REGION_QUIVER):
+                    # equipa mais felcha no quiver
+                    # idealmente #TODO: checar se tem flechas pra equipar, se nao qndo tiver no final da hunt vai ficar spamando atoa
+                    pyautogui.press('num7')
+                    pyautogui.press('num7')
+                    pyautogui.press('num7')
+
             if event_rotate_skills.is_set():
+                # only eats foods / cast utura gran and utani hur when box is gone, prevents eg keep auto utani hur upon paralyze
+                #apenas come qndo o icone de fome aparecer, evitar ficar spamando
+                if pyautogui.locateOnScreen('imgs/starving.png', confidence=0.8):
+                    pyautogui.press('0') # mushroom
+
+                # apenas usa utura gran, caso o icone nao esteja na barrinha de status
+                if not pyautogui.locateOnScreen('imgs/utura_gran.png', confidence=0.98):
+                    pyautogui.press('9') # utura gran
+
+                if not pyautogui.locateOnScreen('imgs/haste.png', confidence=0.98):
+                    pyautogui.press('f10') # utani hur
                 return # caso acabe a box no meio n precisa terminar a rotacao
             
-            if pyautogui.locateOnScreen('battle_region.png', confidence=0.8, region=constants.REGION_BATTLE):
+            if pyautogui.locateOnScreen('imgs/battle_region.png', confidence=0.8, region=constants.REGION_BATTLE):
                 # evita ficar castando magias se nao tiver mob na tela
                 # se der return ele sai da thread e para de rotacionar
                 continue
 
-            if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
-                # se o quiver estiver vazio, refila ele
-                if pyautogui.locateOnScreen('quiver_vazio.png', confidence=0.98, region=constants.REGION_QUIVER):
-                    # equipa mais felcha no quiver
-                    # idealmente #TODO: checar se tem flechas pra equipar, se nao qndo tiver no final da hunt vai ficar spamando atoa
-                    pyautogui.press('7')
-                    pyautogui.press('7')
-                    pyautogui.press('7')
-
-            #apenas come qndo o icone de fome aparecer, evitar ficar spamando
-            if pyautogui.locateOnScreen('starving.png', confidence=0.8):
-                pyautogui.press('0') # mushroom
-
-            # apenas usa utura gran, caso o icone nao esteja na barrinha de status
-            if not pyautogui.locateOnScreen('utura_gran.png', confidence=0.98):
-                pyautogui.press('9') # utura gran
-
-            if not pyautogui.locateOnScreen('haste.png', confidence=0.98):
-                pyautogui.press('f10') # utani hur
+            
 
             if constants.VOCACAO_EM_USO != constants.Vocation.SOMENTE_HEAL:
                 # ensure we only hit space whenever we are not targetting something, this prevents wasting an attack turn
                 
-                if pyautogui.locateOnScreen("something_targeted.png",  confidence=0.99) is None:
+                if pyautogui.locateOnScreen("imgs/something_targeted.png",  confidence=0.99) is None:
                     # ensures we are always targeting the closest mob to us
                     pyautogui.press('esc')
                     pyautogui.press('space')
