@@ -98,14 +98,13 @@ def manager_supplies_rp(event):
                 if  pixel_match_color(MANA_REGION, constants.MANA_PCT_FOR_ENERYING, COR_MANA) and not pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.9):
                     print("deu caca, vou subir o energy ring")
                     pyautogui.press('3') # energy ring
-                else: # TODO: testar isso aqui na posta de haleluja com as true asura, colocar um if FALSE ali em cima ou so omitir o pot de sp
+                else:
+                    # TODO move this to its own method given ssa and might ring are common to all vocations
                     #swap ssa / might ring
                     print("meu deus do ceu maggy onde foi que voce meteu a gente")
-                    
                     if not pyautogui.locateOnScreen('imgs/might_ring_equipped.png', confidence=0.9):
                         pyautogui.press('5') # might ring
                         print("olha o anel")
-                    
                     if not pyautogui.locateOnScreen('imgs/ssa_equipped.png', confidence=0.9):
                         pyautogui.press('6') # SSA
                         print("olha o amuleto")

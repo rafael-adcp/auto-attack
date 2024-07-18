@@ -14,6 +14,9 @@ from vida_mana import manager_supplies_rp
 
 # while True:
 #     kdebug.wait('h')
+#     identify mouse position]
+
+#     pyautogui.moveTo((1825, 188, 40, 42))
 #     print(pyautogui.locateOnScreen('imgs/battle_region.png', confidence=0.8))
 
 def execute_hotkey(hotkey, delay = None):
@@ -46,18 +49,19 @@ def rotate_skills_attack():
                     pyautogui.press('num7')
                     pyautogui.press('num7')
 
+                
+            #apenas come qndo o icone de fome aparecer, evitar ficar spamando
+            if pyautogui.locateOnScreen('imgs/starving.png', confidence=0.8):
+                pyautogui.press('0') # mushroom
+
+            # apenas usa utura gran, caso o icone nao esteja na barrinha de status
+            if not pyautogui.locateOnScreen('imgs/utura_gran.png', confidence=0.98):
+                pyautogui.press('9') # utura gran
+
+            if not pyautogui.locateOnScreen('imgs/haste.png', confidence=0.98):
+                pyautogui.press('f10') # utani hur
+
             if event_rotate_skills.is_set():
-                # only eats foods / cast utura gran and utani hur when box is gone, prevents eg keep auto utani hur upon paralyze
-                #apenas come qndo o icone de fome aparecer, evitar ficar spamando
-                if pyautogui.locateOnScreen('imgs/starving.png', confidence=0.8):
-                    pyautogui.press('0') # mushroom
-
-                # apenas usa utura gran, caso o icone nao esteja na barrinha de status
-                if not pyautogui.locateOnScreen('imgs/utura_gran.png', confidence=0.98):
-                    pyautogui.press('9') # utura gran
-
-                if not pyautogui.locateOnScreen('imgs/haste.png', confidence=0.98):
-                    pyautogui.press('f10') # utani hur
                 return # caso acabe a box no meio n precisa terminar a rotacao
             
             if pyautogui.locateOnScreen('imgs/battle_region.png', confidence=0.8, region=constants.REGION_BATTLE):
@@ -104,10 +108,11 @@ def key_code(key):
             print("parando rotacao de skills")
             
             event_rotate_skills.set() #desabilita a rotacao de skills
-            event_supplies.set() # desabilitia o monitoring de vida e mana
+            # life / mana should always be monitored
+            #event_supplies.set() # desabilitia o monitoring de vida e mana
 
             th_start_rotate_skills_attack.join()
-            th_supplies.join()
+            #th_supplies.join()
 
 with Listener(on_press=key_code) as listener:
     listener.join()
