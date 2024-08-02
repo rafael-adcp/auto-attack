@@ -110,6 +110,10 @@ def core(instruction):
     print("\n\n\n\n\n============")
     print(instruction)
     
+    while not pyautogui.locateOnScreen('imgs/battle_region_empty.png', confidence=0.8, region=constants.REGION_BATTLE):
+        # sleeping so it can kill monsters
+        pyautogui.sleep(0.5)
+    
     go_to_flag(instruction)
     # se conseguir ver o crosshair branquinho tenta ir novamente
     while check_player_position():
