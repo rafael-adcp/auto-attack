@@ -3,54 +3,60 @@
     "path": "foto_new_0.png",
     "down": 0,
     "up": 0,
-    "wait": 10
+    "wait": 12
   },
   {
     "path": "foto_new_1.png",
     "down": 0,
     "up": 0,
-    "wait": 10
+    "wait": 12
   },
   {
     "path": "foto_new_2.png",
     "down": 0,
     "up": 0,
-    "wait": 10
+    "wait": 12
   },
   {
     "path": "foto_new_3.png",
     "down": 0,
     "up": 0,
-    "wait": 10
+    "wait": 12
   },
   {
     "path": "foto_new_4.png",
     "down": 0,
     "up": 0,
-    "wait": 10
+    "wait": 12
   },
   {
     "path": "foto_new_5.png",
     "down": 0,
     "up": 0,
-    "wait": 10
+    "wait": 12
   },
   {
     "path": "foto_new_6.png",
     "down": 0,
     "up": 0,
-    "wait": 10
+    "wait": 12
   },
   {
     "path": "foto_new_7.png",
     "down": 0,
     "up": 0,
-    "wait": 10
+    "wait": 12
   },
   {
     "path": "foto_new_8.png",
     "down": 0,
     "up": 0,
-    "wait": 10
+    "wait": 12
+  },
+  {
+    "path": "foto_new_9.png",
+    "down": 0,
+    "up": 0,
+    "wait": 12
   }
 ]

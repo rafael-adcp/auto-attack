@@ -15,7 +15,9 @@ import constants
 #pyautogui.moveTo(1766+92,304, 2) # 100% vida
 
 WIDTH = 92 # tamanho barrinha cheia
+# posicao no meio da barrinha de vida
 LIFE_REGION = (1766, 304, 92, 5)
+# posicao no meio da barrinha de mana
 MANA_REGION = (1766, 316, 92, 5)
 
 COR_VIDA = (240,97,97)
@@ -49,10 +51,6 @@ def manager_supplies_rp(event):
         if event.is_set():
             return
         
-        # TODO: mover esse bloco todo pra elif, pra sempre um ter prioridade
-        # pq n da pra potar mana e vida no mesmo cd
-        
-        
         #qndo da caca ele sobe o energy, entao dps q tiver safe volta o prisma e tb pode swapar ssa / might ring
         # se a vida for >= 90 e tiver com energy ring, remove ele
         
@@ -61,25 +59,25 @@ def manager_supplies_rp(event):
                 print("tinha dado bosta ne amiguinho, agora q ta tudo bem vou tirar o energy ring e voltar pro prismatic")
                 pyautogui.press(constants.HOTKEY_RING_DEFAULT)
             
-            if pyautogui.locateOnScreen('imgs/no_necklace_equipped.png', confidence=0.99) != None:
-                print("tava sem neck, vai colcoar")
-                pyautogui.press(constants.HOTKEY_NECKLACE_DEFAULT)
-
-            if pyautogui.locateOnScreen('imgs/no_ring_equipped.png', confidence=0.99) != None:
-                print("tava sem ring, vai colcoar")
-                pyautogui.press(constants.HOTKEY_RING_DEFAULT)
-
-        if not pixel_match_color(LIFE_REGION, 90, COR_VIDA):
             if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
-                pyautogui.press('F2') # gran san
-            else:
-                pyautogui.press('F1') # med ico
+                if pyautogui.locateOnScreen('imgs/no_necklace_equipped.png', confidence=0.99) != None:
+                    print("tava sem neck, vai colcoar")
+                    pyautogui.press(constants.HOTKEY_NECKLACE_DEFAULT)
+
+                if pyautogui.locateOnScreen('imgs/no_ring_equipped.png', confidence=0.99) != None:
+                    print("tava sem ring, vai colcoar")
+                    pyautogui.press(constants.HOTKEY_RING_DEFAULT)
+
+            
+            if constants.VOCACAO_EM_USO == constants.Vocation.MS and pyautogui.locateOnScreen('imgs/utamo_vita.png', confidence=0.98):
+                print("vai tirar o utamo")
+                pyautogui.press("r")
+
+        if not pixel_match_color(LIFE_REGION, 80, COR_VIDA):
+            pyautogui.press('F2') # BIG HEAL
         
-        elif not pixel_match_color(LIFE_REGION, 95, COR_VIDA):
-            if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
-                pyautogui.press('F1') # ligh heal
-            else:
-                pyautogui.press('F1') # med ico
+        elif not pixel_match_color(LIFE_REGION, 90, COR_VIDA):
+            pyautogui.press('F1') # ligh heal
             
         
             
@@ -87,8 +85,10 @@ def manager_supplies_rp(event):
         if not pixel_match_color(LIFE_REGION, 50, COR_VIDA):
             if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
                 pyautogui.press('F5') # hp potion ultimate spirit potion
-            else:
+            elif constants.VOCACAO_EM_USO == constants.Vocation.EK_SOLO or constants.VOCACAO_EM_USO == constants.Vocation.EK_DUO:
                 pyautogui.press('F12') # supreme
+            elif constants.VOCACAO_EM_USO == constants.Vocation.MS:
+                pyautogui.press('F2')
 
         # botao do panico
         if not pixel_match_color(LIFE_REGION, 45, COR_VIDA):
@@ -108,10 +108,15 @@ def manager_supplies_rp(event):
                     if not pyautogui.locateOnScreen('imgs/ssa_equipped.png', confidence=0.9):
                         pyautogui.press('6') # SSA
                         print("olha o amuleto")
-                
-            else: # se n for paladino da utamo tempo
+            # if vocacao_em_use is either EK_SOLO or EK_DUO print hellow world
+            
+            elif constants.VOCACAO_EM_USO == constants.Vocation.EK_SOLO or constants.VOCACAO_EM_USO == constants.Vocation.EK_DUO: # se n for paladino da utamo tempo
                 print("vai utamar")
                 pyautogui.press('p') # utamo tempo
+
+            elif constants.VOCACAO_EM_USO == constants.Vocation.MS:
+                print("vai dar utamo vita")
+                pyautogui.press('f4') # utamo vita
 
         else:
             if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN and not pixel_match_color(MANA_REGION, constants.MANA_PCT_FOR_ENERYING, COR_MANA):
@@ -119,5 +124,8 @@ def manager_supplies_rp(event):
                 print("ta negativando")
                 # se a mana ta abaixo de 50 ele ja ta na merda com enery ring ou swapando ssa e subindo might, fora q ta batendo gran san
                 # entao pra nao negativar a mana bate o ultimate spirit
-            elif not pixel_match_color(MANA_REGION, 80, COR_MANA):
+            elif not pixel_match_color(MANA_REGION, 80, COR_MANA) and not constants.VOCACAO_EM_USO == constants.Vocation.MS:
                 pyautogui.press('F4') # pot de mana
+            
+            elif not pixel_match_color(MANA_REGION, 50, COR_MANA) and constants.VOCACAO_EM_USO == constants.Vocation.MS:
+                pyautogui.press('F5') # pot de mana                

@@ -7,6 +7,7 @@ pyautogui.useImageNotFoundException(False) # caso pyauto gui n ache n gera excep
 import threading
 
 from vida_mana import manager_supplies_rp
+from rotacao_skills import rotate_skills_attack
 import json
 
 # hotekeys in game
@@ -23,33 +24,7 @@ event_th = threading.Event()
 
 # while True:
 #     kdebug.wait('h')
-#     print(pyautogui.locateOnScreen('battle_region.png', confidence=0.8))
-
-def execute_hotkey(hotkey, delay = None):
-    pyautogui.press(hotkey)
-    if delay:
-        pyautogui.sleep(delay)
-
-LIST_HOTKEYS_ATTACK = [
-    {"hotkey": 'f3', "delay": 1, "descricao": "amp res"} , 
-    #{"hotkey": 'F3', "delay": 2, "descricao": "mas san"} ,
-    #{"hotkey": 'F6', "delay": 2, "descricao": "avalanche"},
-]
-
-def rotate_skills_attack():
-    while not event_rotate_skills.is_set():
-        for attack in LIST_HOTKEYS_ATTACK:
-            if event_rotate_skills.is_set():
-                return # caso acabe a box no meio n precisa terminar a rotacao
-            
-            if pyautogui.locateOnScreen('battle_region.png', confidence=0.8, region=REGION_BATTLE):
-                # evita ficar castando magias se nao tiver mob na tela
-                # se der return ele sai da thread e para de rotacionar
-                continue
-            #pyautogui.press('esc') #tira o target pra sempre garantir bater no q ta mais perto
-            pyautogui.press('space') # pra entre a rotação ele sempre ter um target
-            execute_hotkey(attack['hotkey'], attack['delay'])
-            
+#     print(pyautogui.locateOnScreen('battle_region_empty.png', confidence=0.8))
 
 running = False
 def key_code(key):
@@ -64,7 +39,7 @@ def key_code(key):
             global th_start_rotate_skills_attack, event_rotate_skills, th_supplies, event_supplies
             
             event_rotate_skills = threading.Event()
-            th_start_rotate_skills_attack = threading.Thread(target=rotate_skills_attack)
+            th_start_rotate_skills_attack = threading.Thread(target=rotate_skills_attack, args=(event_rotate_skills,)) # pq ta em outro arquivo tem q usar o args
             th_start_rotate_skills_attack.start()
 
             event_supplies = threading.Event()
@@ -73,8 +48,6 @@ def key_code(key):
 
             th_run = threading.Thread(target=run)
             th_run.start()
-            
-            execute_hotkey(RING_BOX)
             
 
             
@@ -94,7 +67,7 @@ def key_code(key):
 
 import constants
 def check_player_position():
-    return pyautogui.locateOnScreen('imgs/char_map_position.png', confidence=0.8, region=constants.REGION_MAP)
+    return pyautogui.locateOnScreen('char_map_position.png', confidence=0.8, region=constants.REGION_MAP)
 
 def go_to_flag(instructions):
     try:
@@ -119,6 +92,7 @@ def go_to_flag(instructions):
             
             print('vai clicar')
             pyautogui.click()
+            pyautogui.click()
 
             if flag: # apenas dorme se achar pra evitar delay ao começar no meio da cave
                 print('vai dormir')
@@ -138,11 +112,9 @@ def core(instruction):
     
     go_to_flag(instruction)
     # se conseguir ver o crosshair branquinho tenta ir novamente
-    if check_player_position():
+    while check_player_position():
         print("aparentemente ta preso, vai chamar dnv")
         go_to_flag(instruction)
-    
-
 def run():
     with open('infos.json', 'r') as file:
         data = json.loads(file.read())

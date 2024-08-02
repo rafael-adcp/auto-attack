@@ -12,21 +12,23 @@ REGION_MAP = (1748, 24,116,114)
 REGION_QUIVER = (1825, 188, 40, 42)
 MANA_PCT_FOR_ENERYING = 40
 
+# when false, it will only utani hur ; eat food / utura gran
+AUTO_ATACK = True
 
 class Vocation(Enum):
     PALADIN = 1
     EK_SOLO = 2
     EK_DUO = 3
-    SOMENTE_HEAL = 4
+    MS = 4
 
 VOCACAO_EM_USO = Vocation.PALADIN
 
 
 LIST_HOTKEYS_ATTACK_PALADIN = [
     
-    {"hotkey": 'g', "delay": 0.8, "descricao": "amp res"} , 
-    {"hotkey": 'o', "delay": 0.8, "descricao": "tapete"} , 
-    {"hotkey": 'p', "delay": 1, "descricao": "granada"} , 
+    {"hotkey": 'g', "delay": 0.2, "descricao": "amp res"} , 
+    #{"hotkey": 'o', "delay": 0.2, "descricao": "tapete"} , 
+    #{"hotkey": 'p', "delay": 1, "descricao": "granada"} , 
     # as habilidades da roda nao impactam as de ataque
 
     {"hotkey": 'F3', "delay": 2, "descricao": "mas san"} ,
@@ -64,3 +66,9 @@ for item in LIST_HOTKEYS_ATTACK_KNIGH_DUO:
         LIST_HOTKEYS_ATTACK_KNIGH_SEM_EXETA.append(item)
 
 
+LIST_HOTKEYS_ATTACK_MS = [
+    {"hotkey": 'F6', "delay": 1.8, "descricao": "avalanche"}, 
+    {"hotkey": 'F6', "delay": 1.8, "descricao": "avalanche"}, 
+    {"hotkey": 'F6', "delay": 1.8, "descricao": "avalanche"}, 
+    {"hotkey": 'F6', "delay": 1.8, "descricao": "avalanche"}, 
+]
