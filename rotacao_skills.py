@@ -37,7 +37,8 @@ def rotate_skills_attack(event_rotate_skills):
                 # ensure we only hit space whenever we are not targetting something, this prevents wasting an attack turn
                 if pyautogui.locateOnScreen("imgs/something_targeted.png",  confidence=0.99, region=constants.REGION_BATTLE) is None:
                     # ensures we are always targeting the closest mob to us
-                    pyautogui.press('esc')
+                    #pyautogui.press('esc')
+                    # TODO verificar se eh cave bot ai se for n bater o esc
                     pyautogui.press('space')
             
                 #print(f"vai usar: ", attack['descricao'])
