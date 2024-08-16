@@ -1,11 +1,13 @@
 from pynput.keyboard import Listener
 from pynput import keyboard
 import pyautogui
-
-pyautogui.useImageNotFoundException(False) # caso pyauto gui n ache n gera exception
-
 import threading
 
+from log import get_logger
+
+logger = get_logger(__name__)
+
+# anything that depends on screen poisition needs to be here, aka after the data is populated on previous step
 from vida_mana import manager_supplies_rp
 from rotacao_skills import rotate_skills_attack
 from cacarecos import manager_cacarecos
@@ -14,11 +16,11 @@ running = False
 def key_code(key):
     global running
     if key == keyboard.Key.delete:
-        print("Bot encerrado")
+        logger.info("Bot encerrado")
         return False # para o bot
     elif hasattr(key, 'char') and key.char == 'f': #rotacao skills
         if running == False:
-            print("iniciando rotação de skills")
+            logger.info("Starting bot")
             running = True
             global th_start_rotate_skills_attack, event_rotate_skills, th_supplies, event_supplies, th_cacarecos, event_cacarecos
         
@@ -38,7 +40,7 @@ def key_code(key):
             th_cacarecos.start()
         else:
             running = False
-            print("parando rotacao de skills")
+            logger.info("parando rotacao de skills (healing hp / mp and other things will continue)")
             
             event_rotate_skills.set() #desabilita a rotacao de skills
             # life / mana should always be monitored
@@ -50,6 +52,8 @@ def key_code(key):
 
             #th_cacarecos.join() # desabilita os cacarecos
             event_cacarecos.set()
+
+logger.info("Bot is ready, press 'f' to start or 'delete' to exit")
 
 with Listener(on_press=key_code) as listener:
     listener.join()

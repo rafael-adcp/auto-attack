@@ -1,16 +1,12 @@
 from enum import Enum
-REGION_BATTLE = (1572,24,157,37)
+REGION_BATTLE = (1572,24,157,37) # TODO:: remove this once migrated to locate on screen.py (cacarecos still using it)
 
 HOTKEY_RING_DEFAULT = '4'
 HOTKEY_NECKLACE_DEFAULT = '7'
 
-
-# encontrar_posicao_mini_mapa retornar a posicao
-REGION_MAP = (1748, 24,116,114)
-
 # RP CONFIGS
-REGION_QUIVER = (1825, 188, 40, 42)
-MANA_PCT_FOR_ENERYING = 40
+REGION_QUIVER = (1825, 188, 40, 42) # TODO:: remove this once migrated to locate on screen.py
+MANA_PCT_FOR_ENERGY_RING = 40
 
 # when false, it will only utani hur ; eat food / utura gran
 AUTO_ATACK = True

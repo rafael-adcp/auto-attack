@@ -1,12 +1,72 @@
-todo:
+# TODO
+- quais arquivos faltam:
+    - vida_mana:
+        - [90%] vida pra remover coisas
+        - big heal
+        - light heal
+        - 50% vida
+        - [45%] botao do panico:
+            - subir energy ring
+            - UTAMA de ek
+            - UTAMO de MS
+        - default:
+            - [rp regativando] potando ultimate spirit
+            - ek potando mana
+            - ms potando mana
+        
+    - os cacarecos
+        - quiver vazio
+        - starving
+        - utura gran
+        - empty battle && !haste
 
-- pegar as posicoes na tela pro python gui on-startup e usar @cachetools - https://pypi.org/project/cachetools/
-assim o negocio fica funcional em qualquer computador e da pra mover as janelas tb pra n ficar chumbado
 
+- dps tem q customizar as hotkeys
+    - ficar em um arquivo ao invez de chumbado no codigo
+    - adicioanr no git ignore e deixar um sample file
+    - validar se pra vocacao escolhida tem um arquivo de config else raise error
 
-usar cachetools pra pegar a posicao cacheada das coisas q ele fica olhando, pra ajudar a diminuir processamento
+```
+import dataclasses
+import json
 
-https://pyautogui.readthedocs.io/en/latest/screenshot.html#:~:text=These%20%E2%80%9Clocate%E2%80%9D%20functions%20are%20fairly%20expensive%3B%20they%20can%20take%20a%20full%20second%20to%20run.%20The%20best%20way%20to%20speed%20them%20up%20is%20to%20pass%20a%20region%20argument%20(a%204%2Dinteger%20tuple%20of%20(left%2C%20top%2C%20width%2C%20height))%20to%20only%20search%20a%20smaller%20region%20of%20the%20screen%20instead%20of%20the%20full%20screen%3A
+@dataclasses.dataclass
+class MyClass:
+    foo: str
+    bar: int
+    baz: bool
 
-These “locate” functions are fairly expensive; they can take a full second to run.
-The best way to speed them up is to pass a region argument (a 4-integer tuple of (left, top, width, height)) to only search a smaller region of the screen instead of the full screen:
+def fill_class_from_json(json_data: dict, cls) -> object:
+    """
+    Fill an instance of the given class with data from the JSON dictionary.
+    
+    Raises:
+        ValueError: If a property in the JSON data does not exist on the class.
+        ValueError: If a property on the class is not assigned after filling.
+    """
+    instance = cls()
+    for key, value in json_data.items():
+        if not hasattr(instance, key):
+            raise ValueError(f"Property '{key}' does not exist on class '{cls.__name__}'")
+        setattr(instance, key, value)
+    
+    # Check if all properties on the class are assigned
+    for field in dataclasses.fields(cls):
+        if not getattr(instance, field.name):
+            raise ValueError(f"Property '{field.name}' on class '{cls.__name__}' is not assigned")
+    
+    return instance
+
+# Example usage:
+json_data = '''
+{
+    "foo": "hello",
+    "bar": 42,
+    "baz": true
+}
+'''
+
+json_dict = json.loads(json_data)
+instance = fill_class_from_json(json_dict, MyClass)
+print(instance)  # Output: MyClass(foo='hello', bar=42, baz=True)
+```

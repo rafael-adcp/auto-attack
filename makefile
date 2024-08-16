@@ -1,2 +1,6 @@
 run:
-	.\venv2\Scripts\activate && python main.py
+	cls && .\venv2\Scripts\activate && python pre_main.py && python main.py
+
+
+poc:
+	nodemon -e "*.py" --exec "python poc.py"
