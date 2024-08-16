@@ -10,7 +10,6 @@ pyautogui.useImageNotFoundException(False) # caso pyauto gui n ache n gera excep
 
 class PossibleRegions(Enum):
     BATTLE_REGION = auto()
-    REGION_QUIVER = auto()
     REGION_EQUIPS = auto()
     REGION_LIFE = auto()
     REGION_MANA = auto()
@@ -67,16 +66,6 @@ class LocateOnScreen():
             self.positions_cache[PossibleRegions.BATTLE_REGION.name] = str((battle_dialog_pos[0], battle_dialog_pos[1], 157, 100))
         else:
             raise Exception("could not find battle region position, make you the battle window is opened and using the proper appearance")
-
-    
-    def load_quiver_region(self):
-        # given there can be multiple types of quiver, we infer the region using the pvp symbol as an anchor
-        pvp_symbol_pos = self.check_pvp_symbol("could not find quiver region position, make you character items are visible")
-        
-        quiver_pos = (pvp_symbol_pos[0] - 44, pvp_symbol_pos[1] - 22, pvp_symbol_pos[2] - 7, pvp_symbol_pos[3] + 14)
-
-        self.positions_cache[PossibleRegions.REGION_QUIVER.name] = str(quiver_pos)
-
 
 
     def load_equips_region(self):

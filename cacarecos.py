@@ -45,7 +45,7 @@ def manager_cacarecos(event):
         
         # only casts haste when battle region is empty, this avoids hunts where mobs casts paralyze on you and you keep spamming utani hur
         # nor to mention for MS scenario haste is the same spell group as exori moe so this prevents race condition there
-        if pyautogui.locateOnScreen('imgs/battle_region_empty.png', confidence=0.8, region=constants.REGION_BATTLE) and not pyautogui.locateOnScreen('imgs/haste.png', confidence=0.95, region=EQUIPS_REGION):
+        if pyautogui.locateOnScreen('imgs/battle_region_empty.png', confidence=0.8, region=positions_cache_table.data[PossibleRegions.BATTLE_REGION.name]) and not pyautogui.locateOnScreen('imgs/haste.png', confidence=0.95, region=EQUIPS_REGION):
             logger.info("vai dar haste")
             pyautogui.press('f10') # utani hur
             did_something = True
