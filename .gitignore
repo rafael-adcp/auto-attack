@@ -1,6 +1,7 @@
 venv*/
 foto_new*
 __pycache__/*.*
+poc.py
 
 __pycache__/vida_mana.cpython-310.pyc
 positions_cache.json

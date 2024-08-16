@@ -70,3 +70,7 @@ json_dict = json.loads(json_data)
 instance = fill_class_from_json(json_dict, MyClass)
 print(instance)  # Output: MyClass(foo='hello', bar=42, baz=True)
 ```
+
+
+- move cave hunt to use the newer values instead of the hardcoded ones
+- 

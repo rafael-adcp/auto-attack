@@ -13,7 +13,7 @@ WIDTH = 92 # size of the full bar
 
 LIFE_REGION = positions_cache_table.data[PossibleRegions.REGION_LIFE.name]
 MANA_REGION = positions_cache_table.data[PossibleRegions.REGION_MANA.name]
-EQUIPS_REGION =positions_cache_table.data[PossibleRegions.REGION_EQUIPS.name]
+EQUIPS_REGION = positions_cache_table.data[PossibleRegions.REGION_EQUIPS.name]
 
 
 LIFE_COLOR = (240,97,97)

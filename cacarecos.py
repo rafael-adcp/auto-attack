@@ -4,7 +4,12 @@ import time
 
 from log import get_logger
 
+from locate_things_on_screen import PositionsCacheTable, PossibleRegions
+positions_cache_table = PositionsCacheTable()
+
 logger = get_logger(__name__)
+
+EQUIPS_REGION = positions_cache_table.data[PossibleRegions.REGION_EQUIPS.name]
 
 def manager_cacarecos(event):
     while not event.is_set():
@@ -13,26 +18,26 @@ def manager_cacarecos(event):
         did_something = False
         if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
             # se o quiver estiver vazio, refila ele
-            if pyautogui.locateOnScreen('imgs/quiver_vazio.png', confidence=0.98, region=constants.REGION_QUIVER):
-                # equipa mais felcha no quiver
-                # idealmente #TODO: checar se tem flechas pra equipar, se nao qndo tiver no final da hunt vai ficar spamando atoa
+            if pyautogui.locateOnScreen('imgs/quiver_vazio.png', confidence=0.98, region=EQUIPS_REGION):
+                # equipa mais flecha no quiver
+                # idealmente #TODO: checar se tem flechas pra equipar, se nao qndo tiver no final da hunt vai ficar spamando a toa
                 # todo:: aqui baseado em uma config saber qual quiver q ta usando tb seria interessante pra n ter q checar pro todos os quivers
                 pyautogui.press('num7')
                 pyautogui.press('num7')
                 pyautogui.press('num7')
                 did_something = True
 
-            # TODO: aqui verificar se o pendulet ou o sleepshawl tiver acabado trocar pro amuleto padrao
-            # todo: aqui verificar se o alicorn ring (se um dia eu tiver) tiver acabado, trocar pro ring padrao
+            #TODO: aqui verificar se o pendulet ou o sleepshawl tiver acabado trocar pro amuleto padrao
+            #TODO: aqui verificar se o alicorn ring (se um dia eu tiver) tiver acabado, trocar pro ring padrao
 
         #mover esses cacarecos pra uma outra thread, isso aqui n deveria atrapalhar a rotacao de skill
         #apenas come qndo o icone de fome aparecer, evitar ficar spamando
-        if pyautogui.locateOnScreen('imgs/starving.png', confidence=0.8):
+        if pyautogui.locateOnScreen('imgs/starving.png', confidence=0.8, region=EQUIPS_REGION):
             pyautogui.press('0') # mushroom
             did_something = True
 
         # apenas usa utura gran, caso o icone nao esteja na barrinha de status
-        if not pyautogui.locateOnScreen('imgs/utura_gran.png', confidence=0.98) and not constants.VOCACAO_EM_USO == constants.Vocation.MS:
+        if not pyautogui.locateOnScreen('imgs/utura_gran.png', confidence=0.98, region=EQUIPS_REGION) and not constants.VOCACAO_EM_USO == constants.Vocation.MS:
             pyautogui.press('9') # utura gran
             did_something = True
 
@@ -40,7 +45,7 @@ def manager_cacarecos(event):
         
         # only casts haste when battle region is empty, this avoids hunts where mobs casts paralyze on you and you keep spamming utani hur
         # nor to mention for MS scenario haste is the same spell group as exori moe so this prevents race condition there
-        if pyautogui.locateOnScreen('imgs/battle_region_empty.png', confidence=0.8, region=constants.REGION_BATTLE) and not pyautogui.locateOnScreen('imgs/haste.png', confidence=0.95):
+        if pyautogui.locateOnScreen('imgs/battle_region_empty.png', confidence=0.8, region=constants.REGION_BATTLE) and not pyautogui.locateOnScreen('imgs/haste.png', confidence=0.95, region=EQUIPS_REGION):
             logger.info("vai dar haste")
             pyautogui.press('f10') # utani hur
             did_something = True
