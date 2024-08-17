@@ -1,10 +1,10 @@
 import pyautogui
-import constants
 import json
 
 from locate_things_on_screen import PositionsCacheTable, PossibleRegions
 from log import get_logger
 from config.general_config import get_general_config
+from constants import get_hotkey_rotation_to_use
 
 logger = get_logger(__name__)
 general_config = get_general_config()
@@ -15,19 +15,10 @@ def execute_hotkey(hotkey, delay = None):
     if delay:
         pyautogui.sleep(delay)
 
-# TODO: move this to its own file for redability + reusa within cave hunt
+  
 def rotate_skills_attack(event_rotate_skills):
-    list_hotkeys_para_usar = None
-    if general_config.vocation_been_used == constants.Vocation.PALADIN.value:
-        list_hotkeys_para_usar = constants.LIST_HOTKEYS_ATTACK_PALADIN
-    elif general_config.vocation_been_used == constants.Vocation.EK_DUO.value:
-        list_hotkeys_para_usar = constants.LIST_HOTKEYS_ATTACK_KNIGH_DUO
-    elif general_config.vocation_been_used == constants.Vocation.EK_SOLO.value:
-        list_hotkeys_para_usar = constants.LIST_HOTKEYS_ATTACK_KNIGH_SEM_EXETA  
-    # elif general_config.vocation_been_used == constants.Vocation.MS.value:
-    #     list_hotkeys_para_usar = constants.LIST_HOTKEYS_ATTACK_MS
-
-
+    list_hotkeys_para_usar = get_hotkey_rotation_to_use()
+    
     logger.info("Skill rotation to be used:")
     logger.info(json.dumps(list_hotkeys_para_usar, indent = 2))
     while not event_rotate_skills.is_set() and list_hotkeys_para_usar != None:

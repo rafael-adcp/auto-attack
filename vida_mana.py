@@ -42,7 +42,7 @@ def manager_supplies_rp(event):
             return
         
         #qndo da caca ele sobe o energy, entao dps q tiver safe volta o prisma e tb pode swapar ssa / might ring
-        if pixel_match_color(LIFE_REGION, 90, LIFE_COLOR):
+        if pixel_match_color(LIFE_REGION, 80, LIFE_COLOR):
             
             if pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.99, region=EQUIPS_REGION) != None:
                 logger.info("tinha dado bosta ne amiguinho, agora q ta tudo bem vou tirar o energy ring e voltar pro prismatic")
