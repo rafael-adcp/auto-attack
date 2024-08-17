@@ -4,6 +4,7 @@ numpy==1.26.4
 opencv-python==4.9.0.80
 pillow==10.3.0
 PyAutoGUI==0.9.54      
+pydantic==2.8.2
 PyGetWindow==0.0.9     
 PyMsgBox==1.0.9        
 pynput==1.7.7

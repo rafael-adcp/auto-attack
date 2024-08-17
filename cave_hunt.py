@@ -1,6 +1,5 @@
 from pynput.keyboard import Listener
 from pynput import keyboard
-import keyboard as kdebug
 import pyautogui
 pyautogui.useImageNotFoundException(False) # caso pyauto gui n ache n gera exception
 

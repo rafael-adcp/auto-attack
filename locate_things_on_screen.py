@@ -45,7 +45,6 @@ class LocateOnScreen():
     def load_positions_cache(self):
         logger.info("Will fetch positions dynamically")
         self.load_battle_region()
-        self.load_quiver_region()
         self.load_equips_region()
         self.load_life_and_mana_region()
         logger.info("positions loaded into cache successfully")

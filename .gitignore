@@ -1,7 +1,15 @@
 venv*/
 foto_new*
 __pycache__/*.*
+**/__pycache__/
 poc.py
 
-__pycache__/vida_mana.cpython-310.pyc
+
 positions_cache.json
+
+
+# program config files
+general_config.json
+rp_hotkey.json
+ms_hotkey.json
+ek_hotkey.json

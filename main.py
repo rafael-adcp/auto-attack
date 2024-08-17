@@ -1,6 +1,5 @@
 from pynput.keyboard import Listener
 from pynput import keyboard
-import pyautogui
 import threading
 
 from log import get_logger
