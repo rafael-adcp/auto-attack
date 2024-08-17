@@ -17,6 +17,9 @@ class GeneralConfig(BaseModel):
     # when false, it will only utani hur / eat food / utura gran
     auto_attack : bool
 
+    food_to_eat: str
+    utura_gran: str
+    haste: str
 
 
 def get_general_config():
