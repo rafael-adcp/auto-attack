@@ -1,6 +1,5 @@
 from pynput.keyboard import Listener
 from pynput import keyboard
-import keyboard as kdebug
 import pyautogui
 pyautogui.useImageNotFoundException(False) # caso pyauto gui n ache n gera exception
 
@@ -8,7 +7,11 @@ import threading
 
 from vida_mana import manager_supplies_rp
 from rotacao_skills import rotate_skills_attack
+from cacarecos import manager_cacarecos
+
 import json
+
+REGION_MAP = (1748, 24,116,114) # TODO: fazer isso aqui ler dinamico
 
 # hotekeys in game
 RING_BOX = '1'
@@ -17,14 +20,10 @@ COMER_FOOD = '3'
 
 
 
-REGION_BATTLE = (1572,24,157,37)
+REGION_BATTLE = (1572,24,157,37) # TODO: utilizar o valor via a classe nova, pra ficar 100% dinamico
 
 global event_th
 event_th = threading.Event()
-
-# while True:
-#     kdebug.wait('h')
-#     print(pyautogui.locateOnScreen('battle_region_empty.png', confidence=0.8))
 
 running = False
 def key_code(key):
@@ -36,7 +35,7 @@ def key_code(key):
         if running == False:
             print("iniciando rotação de skills")
             running = True
-            global th_start_rotate_skills_attack, event_rotate_skills, th_supplies, event_supplies
+            global th_start_rotate_skills_attack, event_rotate_skills, th_supplies, event_supplies, th_cacarecos, event_cacarecos
             
             event_rotate_skills = threading.Event()
             th_start_rotate_skills_attack = threading.Thread(target=rotate_skills_attack, args=(event_rotate_skills,)) # pq ta em outro arquivo tem q usar o args
@@ -45,6 +44,10 @@ def key_code(key):
             event_supplies = threading.Event()
             th_supplies = threading.Thread(target=manager_supplies_rp, args=(event_supplies,)) # pq ta em outro arquivo tem q usar o args
             th_supplies.start()
+
+            event_cacarecos =  threading.Event()
+            th_cacarecos = threading.Thread(target=manager_cacarecos, args=(event_cacarecos,)) # pq ta em outro arquivo tem q usar o args
+            th_cacarecos.start()
 
             th_run = threading.Thread(target=run)
             th_run.start()
@@ -67,7 +70,7 @@ def key_code(key):
 
 import constants
 def check_player_position():
-    return pyautogui.locateOnScreen('char_map_position.png', confidence=0.8, region=constants.REGION_MAP)
+    return pyautogui.locateOnScreen('char_map_position.png', confidence=0.8, region=REGION_MAP)
 
 def go_to_flag(instructions):
     try:
@@ -79,7 +82,7 @@ def go_to_flag(instructions):
         print(instructions['path'])
         flag = pyautogui.locateOnScreen(instructions['path'], 
                                     confidence=0.8,
-                                    region=constants.REGION_MAP)
+                                    region=REGION_MAP)
         print(flag)
         if not flag:
             print("problema ao encontrar a flag")

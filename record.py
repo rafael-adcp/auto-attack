@@ -5,7 +5,6 @@ import json
 
 class Rec:
     def __init__(self):
-        print("oi")
         self.count = 0
         self.coordinates = []
 
@@ -22,6 +21,7 @@ class Rec:
             "wait": 2
         }
         self.coordinates.append(infos)
+        print("took a photo")
     
     def down_stair(self):
         last_coordinates = self.coordinates[-1]
