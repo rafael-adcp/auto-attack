@@ -4,8 +4,10 @@ import json
 
 from locate_things_on_screen import PositionsCacheTable, PossibleRegions
 from log import get_logger
+from config.general_config import get_general_config
 
 logger = get_logger(__name__)
+general_config = get_general_config()
 
 positions_cache_table = PositionsCacheTable()
 def execute_hotkey(hotkey, delay = None):
@@ -16,13 +18,13 @@ def execute_hotkey(hotkey, delay = None):
 # TODO: move this to its own file for redability + reusa within cave hunt
 def rotate_skills_attack(event_rotate_skills):
     list_hotkeys_para_usar = None
-    if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
+    if general_config.vocation_been_used == constants.Vocation.PALADIN.value:
         list_hotkeys_para_usar = constants.LIST_HOTKEYS_ATTACK_PALADIN
-    elif constants.VOCACAO_EM_USO == constants.Vocation.EK_DUO:
+    elif general_config.vocation_been_used == constants.Vocation.EK_DUO.value:
         list_hotkeys_para_usar = constants.LIST_HOTKEYS_ATTACK_KNIGH_DUO
-    elif constants.VOCACAO_EM_USO == constants.Vocation.EK_SOLO:
+    elif general_config.vocation_been_used == constants.Vocation.EK_SOLO.value:
         list_hotkeys_para_usar = constants.LIST_HOTKEYS_ATTACK_KNIGH_SEM_EXETA  
-    # elif constants.VOCACAO_EM_USO == constants.Vocation.MS:
+    # elif general_config.vocation_been_used == constants.Vocation.MS.value:
     #     list_hotkeys_para_usar = constants.LIST_HOTKEYS_ATTACK_MS
 
 
@@ -40,7 +42,7 @@ def rotate_skills_attack(event_rotate_skills):
                 # cant "return" otherwise would leave the thread and stop the skill rotation
                 continue
 
-            if constants.AUTO_ATACK:
+            if general_config.auto_attack:
                 # ensure we only hit space whenever we are not targetting something, this prevents wasting an attack turn
                 if pyautogui.locateOnScreen("imgs/something_targeted.png",  confidence=0.99, region=positions_cache_table.data[PossibleRegions.BATTLE_REGION.name]) is None:
                     # ensures we are always targeting the closest mob to us

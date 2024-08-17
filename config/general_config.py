@@ -8,7 +8,15 @@ class GeneralConfig(BaseModel):
     
     hp_pct_to_use_big_heal: int
     hp_pct_to_use_light_heal: int
+    
     hp_pct_to_enter_survival_mode: int
+    hp_pct_to_pot_life: int
+
+    mana_pct_to_use_pot: int
+
+    # when false, it will only utani hur / eat food / utura gran
+    auto_attack : bool
+
 
 
 def get_general_config():

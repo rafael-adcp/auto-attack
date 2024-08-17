@@ -1,54 +1,56 @@
 from pydantic import BaseModel
-from typing import Literal
+from typing import Literal, Union
 
 from fill_class_from_json import fill_class_from_json
 from config.general_config import get_general_config
 
 class DefaultHotkey(BaseModel):
-    ring_default : str
-    necklace_default : str
+    ring_default: Union[str, int]
+    necklace_default: Union[str, int]
     
-    # when false, it will only utani hur / eat food / utura gran
-    auto_attack : bool
 
-    mana_potion : str
-    hp_potion: str
+    mana_potion: Union[str, int]
 
-    ssa: str
-    might_ring: str
+    ssa: Union[str, int]
+    might_ring: Union[str, int]
 
-    mana_pct_to_use_pot: int
+    big_heal: Union[str, int]
+    light_heal: Union[str, int]
 
 class Paladin(DefaultHotkey):
-    amp_res: str
-    mas_san: str
-    rune_to_use: str
+    amp_res: Union[str, int]
+    mas_san: Union[str, int]
+    rune_to_use: Union[str, int]
 
     mana_pct_for_energy_ring: int
-    energy_ring: str
+    energy_ring: Union[str, int]
 
     # so it knows which quiver to look after to check if it should equip more arrows or not
     quiver_been_used: Literal["brown","blue", "red", "jungle", "naga", "alicorn"]
-    equip_more_arrows: str
+    equip_more_arrows: Union[str, int]
+
+    ultimate_spirit_potion: Union[str, int]
 
     # TODO: tapete and granada are not yet been used
-    # tapete: str
-    # granada: str
+    # tapete: Union[str, int]
+    # granada: Union[str, int]
 
 class Knight(DefaultHotkey):
-    exeta: str
-    exori: str
-    exori_gran: str
-    utito_tempo: str
-    exori_mas: str
-    utamo_tempo: str
+    exeta: Union[str, int]
+    exori: Union[str, int]
+    exori_gran: Union[str, int]
+    utito_tempo: Union[str, int]
+    exori_mas: Union[str, int]
+    utamo_tempo: Union[str, int]
 
     should_use_exeta: bool # when hunting solo and a monster that doesnt run
-
+    supreme_potion: Union[str, int]
 
 class MasterSorcerer(DefaultHotkey):
-    rune_to_use: str
-    utamo_vita : str
+    rune_to_use: Union[str, int]
+    utamo_vita: Union[str, int]
+    remove_utamo_vita: Union[str, int]
+    exura_vita: Union[str, int]
 
 
 def get_paladin_hotkey_config():

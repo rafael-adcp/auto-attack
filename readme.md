@@ -1,4 +1,4 @@
-pip3 instal -r requirements.txt
+pip3 install -r requirements.txt
  
 ou entao manualmente:
 pip3 install pyautogui pillow opencv-python keyboard pynput pygetwindow

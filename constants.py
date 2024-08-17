@@ -1,22 +1,10 @@
 from enum import Enum
 
-HOTKEY_RING_DEFAULT = '4'
-HOTKEY_NECKLACE_DEFAULT = '7'
-
-# RP CONFIGS
-MANA_PCT_FOR_ENERGY_RING = 40
-
-# when false, it will only utani hur / eat food / utura gran
-AUTO_ATACK = True
-
-class Vocation(Enum):
-    PALADIN = 1
-    EK_SOLO = 2
-    EK_DUO = 3
-    MS = 4
-
-VOCACAO_EM_USO = Vocation.PALADIN
-
+class Vocation(Enum): # this should always be up to date with general_config.py
+    PALADIN = 'paladin'
+    EK_SOLO = 'ek_solo'
+    EK_DUO = 'ek_duo'
+    MS = 'ms'
 
 LIST_HOTKEYS_ATTACK_PALADIN = [
     

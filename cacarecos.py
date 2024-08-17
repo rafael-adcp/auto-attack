@@ -5,8 +5,10 @@ import time
 from log import get_logger
 
 from locate_things_on_screen import PositionsCacheTable, PossibleRegions
-positions_cache_table = PositionsCacheTable()
+from config.general_config import get_general_config
 
+positions_cache_table = PositionsCacheTable()
+general_config = get_general_config()
 logger = get_logger(__name__)
 
 EQUIPS_REGION = positions_cache_table.data[PossibleRegions.REGION_EQUIPS.name]
@@ -16,7 +18,7 @@ def manager_cacarecos(event):
         if event.is_set():
             return
         did_something = False
-        if constants.VOCACAO_EM_USO == constants.Vocation.PALADIN:
+        if general_config.vocation_been_used == constants.Vocation.PALADIN.value:
             # se o quiver estiver vazio, refila ele
             if pyautogui.locateOnScreen('imgs/quiver_vazio.png', confidence=0.98, region=EQUIPS_REGION):
                 # equipa mais flecha no quiver
@@ -37,7 +39,7 @@ def manager_cacarecos(event):
             did_something = True
 
         # apenas usa utura gran, caso o icone nao esteja na barrinha de status
-        if not pyautogui.locateOnScreen('imgs/utura_gran.png', confidence=0.98, region=EQUIPS_REGION) and not constants.VOCACAO_EM_USO == constants.Vocation.MS:
+        if not general_config.vocation_been_used == constants.Vocation.MS.value and not pyautogui.locateOnScreen('imgs/utura_gran.png', confidence=0.98, region=EQUIPS_REGION):
             pyautogui.press('9') # utura gran
             did_something = True
 
