@@ -3,6 +3,7 @@ from pynput import keyboard
 import threading
 
 from log import get_logger
+from sell_loot import sell_loot
 
 logger = get_logger(__name__)
 
@@ -51,8 +52,12 @@ def key_code(key):
 
             #th_cacarecos.join() # desabilita os cacarecos
             event_cacarecos.set()
+    elif hasattr(key, 'char') and key.char == 'l': # sell loot
+        logger.info("Selling loot")
+        
+        sell_loot()
+
 
 logger.info("Bot is ready, press 'f' to start or 'delete' to exit")
-
 with Listener(on_press=key_code) as listener:
     listener.join()
