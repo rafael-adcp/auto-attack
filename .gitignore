@@ -3,7 +3,8 @@ foto_new*
 __pycache__/*.*
 **/__pycache__/
 poc.py
-
+# ignore all the content of poc folder
+poc/*
 
 positions_cache.json
 
