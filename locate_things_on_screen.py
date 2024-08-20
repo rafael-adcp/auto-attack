@@ -14,6 +14,9 @@ class PossibleRegions(Enum):
     REGION_LIFE = auto()
     REGION_MANA = auto()
 
+    LIFE_COLOR = auto()
+    MANA_COLOR = auto()
+
 
 class PositionsCacheTable():
     data = {}
@@ -83,13 +86,24 @@ class LocateOnScreen():
             raise Exception("could not find life and mana region position, make you character life and mana are visible")
         
         # from the heart icon we move it to be in the middle of the life bar
-        mid_life_bar_pos = (life_icon_pos[0] + 13, life_icon_pos[1] + 0, life_icon_pos[2] + 81,life_icon_pos[3] - 4)
+        life_bar_pos = (life_icon_pos[0] + 13, life_icon_pos[1] + 0, life_icon_pos[2] + 81,life_icon_pos[3] - 4)
+        self.positions_cache[PossibleRegions.REGION_LIFE.name] = str(life_bar_pos)
+
+
+        # moving so we are ontop of the bar itself to fetch its color
+        life_color = pyautogui.pixel(int(life_bar_pos[0] + 30), int(life_bar_pos[1] + 5))
+        self.positions_cache[PossibleRegions.LIFE_COLOR.name] = str(life_color)
+
+
+
 
         # mana and life are the exact thing, the only different is the "y" axis, so we just move it
-        mid_mana_bar_pos = (mid_life_bar_pos[0], mid_life_bar_pos[1] + 12, mid_life_bar_pos[2], mid_life_bar_pos[3])
+        # moving so we are ontop of the bar itself to fetch its color
+        mana_bar_pos = (life_bar_pos[0], life_bar_pos[1] + 12, life_bar_pos[2], life_bar_pos[3])
 
-        self.positions_cache[PossibleRegions.REGION_LIFE.name] = str(mid_life_bar_pos)
-        self.positions_cache[PossibleRegions.REGION_MANA.name] = str(mid_mana_bar_pos)
+        self.positions_cache[PossibleRegions.REGION_MANA.name] = str(mana_bar_pos)
+        mana_color = pyautogui.pixel(int(mana_bar_pos[0] + 30), int(mana_bar_pos[1] + 5))
+        self.positions_cache[PossibleRegions.MANA_COLOR.name] = str(mana_color)
         
 
 
