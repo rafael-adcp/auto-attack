@@ -28,14 +28,14 @@ def rotate_skills_attack(event_rotate_skills):
             if event_rotate_skills.is_set():
                 return # upon asking the thread to die we abort he skill rotation imediately
 
-            if pyautogui.locateOnScreen('imgs/battle_region_empty.png', confidence=0.5, region=positions_cache_table.data[PossibleRegions.BATTLE_REGION.name]):
+            if pyautogui.locateOnScreen('imgs/battle_region_empty.png', region=positions_cache_table.data[PossibleRegions.BATTLE_REGION.name]):
                 # avoids castin runes / spells if there is no monster available on the battle list
                 # cant "return" otherwise would leave the thread and stop the skill rotation
                 continue
 
             if general_config.auto_attack:
                 # ensure we only hit space whenever we are not targetting something, this prevents wasting an attack turn
-                if pyautogui.locateOnScreen("imgs/something_targeted.png",  confidence=0.99, region=positions_cache_table.data[PossibleRegions.BATTLE_REGION.name]) is None:
+                if pyautogui.locateOnScreen("imgs/something_targeted.png", region=positions_cache_table.data[PossibleRegions.BATTLE_REGION.name], minSearchTime=1) is None:
                     # ensures we are always targeting the closest mob to us
                     pyautogui.press('esc')
                     pyautogui.press('space')
