@@ -43,7 +43,6 @@ def manager_supplies_rp(event):
         
         #qndo da caca ele sobe o energy, entao dps q tiver safe volta o prisma e tb pode swapar ssa / might ring
         if pixel_match_color(LIFE_REGION, 80, LIFE_COLOR):
-            
             if pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.99, region=EQUIPS_REGION) != None:
                 logger.info("tinha dado bosta ne amiguinho, agora q ta tudo bem vou tirar o energy ring e voltar pro prismatic")
                 pyautogui.press(current_vocation_in_use_hotkey.ring_default)
@@ -77,7 +76,30 @@ def manager_supplies_rp(event):
         
         elif not pixel_match_color(LIFE_REGION, general_config.hp_pct_to_use_light_heal, LIFE_COLOR): # LIGHT HEAL
             pyautogui.press(current_vocation_in_use_hotkey.light_heal) # ligh heal
+
+        # paladin using energy ring
+        if general_config.vocation_been_used == constants.Vocation.PALADIN.value:
+                # life is <= X%
+                # have at least X% mana
+                # is not wearing energy ring
+                if (
+                    not pixel_match_color(LIFE_REGION, current_vocation_in_use_hotkey.hp_pct_for_energy_ring, LIFE_COLOR) 
+                    and pixel_match_color(MANA_REGION, current_vocation_in_use_hotkey.mana_pct_for_energy_ring, MANA_COLOR) 
+                    and not pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.9, region=EQUIPS_REGION)
+                ):
+                    # apenas swapa pro energy ring se tiver mana, pq se a mana tiver baixa vai da bosta
+                    logger.info("deu caca, vou subir o energy ring")
+                    pyautogui.press(current_vocation_in_use_hotkey.energy_ring)
+
+        # SSA general
+        if not pixel_match_color(LIFE_REGION, general_config.hp_pct_to_use_ssa, LIFE_COLOR):
+            ssa()
+
+        # migh ring general
+        if not pixel_match_color(LIFE_REGION, general_config.hp_pct_to_use_might_ring, LIFE_COLOR):
+            might_ring()
             
+
 
         if not pixel_match_color(LIFE_REGION, general_config.hp_pct_to_pot_life, LIFE_COLOR):
             if general_config.vocation_been_used == constants.Vocation.PALADIN.value:
@@ -90,30 +112,16 @@ def manager_supplies_rp(event):
         # botao do panico
         if not pixel_match_color(LIFE_REGION, general_config.hp_pct_to_enter_survival_mode, LIFE_COLOR):
             if general_config.vocation_been_used == constants.Vocation.PALADIN.value:
-                # apenas swapa pro energy ring se tiver mana, pq se a mana tiver baixa vai da bosta
-                
-                if  pixel_match_color(MANA_REGION, current_vocation_in_use_hotkey.mana_pct_for_energy_ring, MANA_COLOR) and not pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.9, region=EQUIPS_REGION):
-                    logger.info("deu caca, vou subir o energy ring")
-                    pyautogui.press(current_vocation_in_use_hotkey.energy_ring)
-                else:
-                    # TODO move this to its own method given ssa and might ring are common to all vocations
-                    #swap ssa / might ring
-                    logger.info("meu deus do ceu maggy onde foi que voce meteu a gente")
-                    if not pyautogui.locateOnScreen('imgs/might_ring_equipped.png', confidence=0.9, region=EQUIPS_REGION):
-                        pyautogui.press(current_vocation_in_use_hotkey.might_ring)
-                        logger.info("olha o anel")
-                    if not pyautogui.locateOnScreen('imgs/ssa_equipped.png', confidence=0.9, region=EQUIPS_REGION):
-                        pyautogui.press(current_vocation_in_use_hotkey.ssa)
-                        logger.info("olha o amuleto")
-            
+                ssa_and_might_ring()
             elif general_config.vocation_been_used in [constants.Vocation.EK_SOLO.value, constants.Vocation.EK_DUO.value]:
                 logger.info("hmm se assou ne amiguinho... ACORDA O DRUID Q ELE TA DORMINDO!! Enquanto isso vou dar utamo tempo pra vc respirar um pouco......")
                 pyautogui.press(current_vocation_in_use_hotkey.utamo_tempo)
+                ssa_and_might_ring()
 
             elif general_config.vocation_been_used == constants.Vocation.MS.value:
                 logger.info("santa pedrada batman, vou dar utamo vita")
                 pyautogui.press(current_vocation_in_use_hotkey.utamo_vita)
-
+                ssa_and_might_ring()
         else:
             if general_config.vocation_been_used == constants.Vocation.PALADIN.value and not pixel_match_color(MANA_REGION, current_vocation_in_use_hotkey.mana_pct_for_energy_ring, MANA_COLOR):
                 pyautogui.press(current_vocation_in_use_hotkey.ultimate_spirit_potion)
@@ -127,3 +135,19 @@ def manager_supplies_rp(event):
             elif not pixel_match_color(MANA_REGION, general_config.mana_pct_to_use_pot, MANA_COLOR) and general_config.vocation_been_used == constants.Vocation.MS.value:
                 # for mages (druid / sorcerer) they will probably level up before the need to use a potion, nor to mention they have tons of mana leech
                 pyautogui.press(current_vocation_in_use_hotkey.mana_potion)
+
+def ssa():
+    if not pyautogui.locateOnScreen('imgs/ssa_equipped.png', confidence=0.9, region=EQUIPS_REGION):
+        pyautogui.press(current_vocation_in_use_hotkey.ssa)
+        logger.info("olha o amuleto")
+
+def might_ring():
+    if not pyautogui.locateOnScreen('imgs/might_ring_equipped.png', confidence=0.9, region=EQUIPS_REGION):
+        pyautogui.press(current_vocation_in_use_hotkey.might_ring)
+        logger.info("olha o anel")
+
+def ssa_and_might_ring():
+    logger.info("meu deus do ceu maggy onde foi que voce meteu a gente")
+    ssa()
+    might_ring()
+    

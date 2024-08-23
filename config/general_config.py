@@ -22,5 +22,9 @@ class GeneralConfig(BaseModel):
     haste: str
 
 
+    hp_pct_to_use_might_ring: int
+    hp_pct_to_use_ssa: int
+
+
 def get_general_config():
     return fill_class_from_json(GeneralConfig, "general_config.json")
