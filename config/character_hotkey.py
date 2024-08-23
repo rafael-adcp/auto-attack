@@ -25,6 +25,7 @@ class Paladin(DefaultHotkey):
     rune_to_use: str
 
     mana_pct_for_energy_ring: int
+    hp_pct_for_energy_ring: int
     energy_ring: str
 
     # so it knows which quiver to look after to check if it should equip more arrows or not
