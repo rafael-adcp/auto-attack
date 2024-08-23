@@ -20,8 +20,8 @@ MANA_REGION = positions_cache_table.data[PossibleRegions.REGION_MANA.name]
 EQUIPS_REGION = positions_cache_table.data[PossibleRegions.REGION_EQUIPS.name]
 
 
-LIFE_COLOR = (240,97,97)
-MANA_COLOR = (83,80,217)
+LIFE_COLOR = positions_cache_table.data[PossibleRegions.LIFE_COLOR.name]
+MANA_COLOR = positions_cache_table.data[PossibleRegions.MANA_COLOR.name]
 
 def calcula_width(percent):
     return int ((WIDTH * percent) / 100)
