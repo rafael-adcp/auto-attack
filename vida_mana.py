@@ -9,11 +9,10 @@ positions_cache_table = PositionsCacheTable()
 
 from config.character_hotkey import get_current_vocation_in_use_hotkey
 from config.general_config import get_general_config
+from vida_mana_utils import pixel_match_color
 
 current_vocation_in_use_hotkey = get_current_vocation_in_use_hotkey()
 general_config = get_general_config()
-
-WIDTH = 92 # size of the full bar
 
 LIFE_REGION = positions_cache_table.data[PossibleRegions.REGION_LIFE.name]
 MANA_REGION = positions_cache_table.data[PossibleRegions.REGION_MANA.name]
@@ -22,18 +21,6 @@ EQUIPS_REGION = positions_cache_table.data[PossibleRegions.REGION_EQUIPS.name]
 
 LIFE_COLOR = positions_cache_table.data[PossibleRegions.LIFE_COLOR.name]
 MANA_COLOR = positions_cache_table.data[PossibleRegions.MANA_COLOR.name]
-
-def calcula_width(percent):
-    return int ((WIDTH * percent) / 100)
-
-
-# logger.info(pixel_match_color(MANA_REGION, 50, MANA_COLOR))
-def pixel_match_color(region, percent, color):
-    result_percent = calcula_width(percent)
-    x = region[0] + result_percent
-    y = region[1] + region[3]
-    return pyautogui.pixelMatchesColor(int(x), int(y), color, 10)
-
 
 
 def manager_supplies_rp(event):
