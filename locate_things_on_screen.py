@@ -106,9 +106,7 @@ class LocateOnScreen():
 
         # moving so we are on top of the mana bar itself to fetch its color
         x, y = get_position(mana_bar_pos, 50)
-        pyautogui.moveTo(x, y, duration=0.8)
         mana_color = pyautogui.pixel(int(x), int(y))
-        print(mana_color)
         self.positions_cache[PossibleRegions.MANA_COLOR.name] = str(mana_color)
         
 
