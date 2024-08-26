@@ -19,17 +19,32 @@ def fetch_img_pos(img):
         print("will atempt to find", img)
         pos = pyautogui.locateOnScreen(img)
         print(pos)
-        pyautogui.moveTo(pos.left, pos.top, duration=0.5)
+        #pyautogui.moveTo(pos.left, pos.top, duration=0.5)
+        return pos
     except:
         print("failed to find", img)
     finally:
         print("\n\n\n")
 
 for img in battle:
-    fetch_img_pos(img)
+    pos = fetch_img_pos(img)
+    if pos:
+        pyautogui.screenshot(
+            'imgs/FOUNDED_battle_region_{}.png'.format(
+                img.split(".")[0].split("/")[-1]
+            ), region=(int(pos.left), int(pos.top), 157, 100)
+        )
+
 
 for img in empty_battle:
     fetch_img_pos(img)
 
 for img in pvp:
-    fetch_img_pos(img)
+    pos = fetch_img_pos(img)
+    #equips_pos = (int(pvp_symbol_pos[0] - 123), int(pvp_symbol_pos[1] - 76), 115, 162)
+    if pos:
+        pyautogui.screenshot(
+            'imgs/FOUNDED_pvp_symbol_{}.png'.format(
+                img.split(".")[0].split("/")[-1]
+            ), region=(int(pos.left - 123), int(pos.top - 76), 115, 162)
+        )
