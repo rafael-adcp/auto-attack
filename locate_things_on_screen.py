@@ -3,6 +3,7 @@ from enum import Enum, auto
 import json
 
 from log import get_logger
+from vida_mana_utils import get_position
 
 logger = get_logger(__name__)
 
@@ -13,6 +14,9 @@ class PossibleRegions(Enum):
     REGION_EQUIPS = auto()
     REGION_LIFE = auto()
     REGION_MANA = auto()
+
+    LIFE_COLOR = auto()
+    MANA_COLOR = auto()
 
 
 class PositionsCacheTable():
@@ -82,14 +86,28 @@ class LocateOnScreen():
         if not life_icon_pos:
             raise Exception("could not find life and mana region position, make you character life and mana are visible")
         
-        # from the heart icon we move it to be in the middle of the life bar
-        mid_life_bar_pos = (life_icon_pos[0] + 13, life_icon_pos[1] + 0, life_icon_pos[2] + 81,life_icon_pos[3] - 4)
+        # from the heart icon we use same methods as code, to obtain the color
+        life_bar_pos = (life_icon_pos[0] + 13, life_icon_pos[1] + 0, life_icon_pos[2] + 81,life_icon_pos[3] - 4)
+        self.positions_cache[PossibleRegions.REGION_LIFE.name] = str(life_bar_pos)
+
+
+        # moving so we are on top of the life bar itself to fetch its color
+        x, y = get_position(life_bar_pos, 50)
+        life_color = pyautogui.pixel(int(x), int(y))
+        self.positions_cache[PossibleRegions.LIFE_COLOR.name] = str(life_color)
+
+
+
 
         # mana and life are the exact thing, the only different is the "y" axis, so we just move it
-        mid_mana_bar_pos = (mid_life_bar_pos[0], mid_life_bar_pos[1] + 12, mid_life_bar_pos[2], mid_life_bar_pos[3])
+        # moving so we are ontop of the bar itself to fetch its color
+        mana_bar_pos = (life_bar_pos[0], life_bar_pos[1] + 12, life_bar_pos[2], life_bar_pos[3])
+        self.positions_cache[PossibleRegions.REGION_MANA.name] = str(mana_bar_pos)
 
-        self.positions_cache[PossibleRegions.REGION_LIFE.name] = str(mid_life_bar_pos)
-        self.positions_cache[PossibleRegions.REGION_MANA.name] = str(mid_mana_bar_pos)
+        # moving so we are on top of the mana bar itself to fetch its color
+        x, y = get_position(mana_bar_pos, 50)
+        mana_color = pyautogui.pixel(int(x), int(y))
+        self.positions_cache[PossibleRegions.MANA_COLOR.name] = str(mana_color)
         
 
 
