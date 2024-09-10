@@ -33,7 +33,7 @@ def get_rp_hotkeys():
         # as habilidades da roda nao impactam as de ataque
 
         {"hotkey": current_vocation_hotkey.mas_san, "delay": 2, "descricao": "mas san"} ,
-        {"hotkey": current_vocation_hotkey.rune_to_use, "delay": 0.8, "descricao": "avalanche"}, 
+        {"hotkey": current_vocation_hotkey.rune_to_use, "delay": 2, "descricao": "avalanche"}, 
             # 0.8 eh so qndo tem o amp res
             # 2 eh qndo n usa ampres
         #dps da ultima spell n precisa de delay

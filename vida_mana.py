@@ -33,23 +33,18 @@ def manager_supplies_rp(event):
             if pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.99, region=EQUIPS_REGION) != None:
                 logger.info("tinha dado bosta ne amiguinho, agora q ta tudo bem vou tirar o energy ring e voltar pro prismatic")
                 pyautogui.press(current_vocation_in_use_hotkey.ring_default)
-            
-            # THINK: should this be moved to "cacarecos?"
+
             if general_config.vocation_been_used == constants.Vocation.PALADIN.value:
-                #spare unecessary usage of ssa
                 is_missing_necklace = pyautogui.locateOnScreen('imgs/no_necklace_equipped.png', confidence=0.99, region=EQUIPS_REGION)
-                is_ussing_ssa = pyautogui.locateOnScreen('imgs/ssa_equipped.png', confidence=0.9, region=EQUIPS_REGION)
-                
-                if is_missing_necklace != None or is_ussing_ssa != None:
-                    logger.info("tava sem neck (ou tava de ssa), vai colocar o default")
+
+                if is_missing_necklace != None:
+                    logger.info("tava sem neck, vai colocar o default")
                     pyautogui.press(current_vocation_in_use_hotkey.necklace_default)
 
-                #spare unecessary usage of might ring
                 is_missing_ring = pyautogui.locateOnScreen('imgs/no_ring_equipped.png', confidence=0.99, region=EQUIPS_REGION)
-                is_using_might_ring = pyautogui.locateOnScreen('imgs/might_ring_equipped.png', confidence=0.9, region=EQUIPS_REGION)
                 
-                if is_missing_ring != None or is_using_might_ring != None:
-                    logger.info("tava sem ring (ou de might), vai colocar o default")
+                if is_missing_ring != None:
+                    logger.info("tava sem ring, vai colocar o default")
                     pyautogui.press(current_vocation_in_use_hotkey.ring_default)
 
             

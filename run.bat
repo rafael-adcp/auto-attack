@@ -1,0 +1,1 @@
+cls && .\venv2\Scripts\activate && python pre_main.py && python main.py
