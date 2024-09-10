@@ -9,7 +9,9 @@ positions_cache.json
 
 
 # program config files
-general_config.json
 rp_hotkey.json
 ms_hotkey.json
 ek_hotkey.json
+
+*general_config*.json
+*hunt_general_config*.json
