@@ -26,4 +26,4 @@ class GeneralConfig(BaseModel):
 
 
 def get_general_config():
-    return fill_class_from_yaml(GeneralConfig, "general_config.json")
+    return fill_class_from_yaml(GeneralConfig, "general_config.yaml")

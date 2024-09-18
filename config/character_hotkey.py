@@ -59,13 +59,13 @@ class MasterSorcerer(DefaultHotkey):
 
 def get_paladin_hotkey_config():
     
-    return fill_class_from_yaml(Paladin, 'rp_hotkey.json')
+    return fill_class_from_yaml(Paladin, 'rp_hotkey.yaml')
 
 def get_ek_hotkey_config():
-    return fill_class_from_yaml(Paladin, 'ek_hotkey.json')
+    return fill_class_from_yaml(Paladin, 'ek_hotkey.yaml')
 
 def get_ms_hotkey_config():
-    return fill_class_from_yaml(Paladin, 'ms_hotkey.json')
+    return fill_class_from_yaml(Paladin, 'ms_hotkey.yaml')
 
 
 def get_current_vocation_in_use_hotkey():
