@@ -26,9 +26,6 @@ def key_code(key):
         if running == False:
             logger.info("Starting bot")
             running = True
-            
-        
-            
             thread_manager.create_thread('rotate_skills_attack', rotate_skills_attack)
             thread_manager.create_thread('manager_supplies_rp', manager_supplies_rp, should_be_stopped=False)
             thread_manager.create_thread('manager_cacarecos', manager_cacarecos, should_be_stopped=False)
