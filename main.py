@@ -11,7 +11,12 @@ from vida_mana import manager_supplies_rp
 from rotacao_skills import rotate_skills_attack
 from cacarecos import manager_cacarecos
 
+from thread_manager import ThreadManager
+
+global thread_manager
+thread_manager = ThreadManager()
 running = False
+
 def key_code(key):
     global running
     if key == keyboard.Key.delete:
@@ -21,36 +26,17 @@ def key_code(key):
         if running == False:
             logger.info("Starting bot")
             running = True
-            global th_start_rotate_skills_attack, event_rotate_skills, th_supplies, event_supplies, th_cacarecos, event_cacarecos
+            
         
             
-            event_rotate_skills = threading.Event()
-            th_start_rotate_skills_attack = threading.Thread(target=rotate_skills_attack, args=(event_rotate_skills,)) # pq ta em outro arquivo tem q usar o args
-            # se estivesse no msm arquivo seria somente th_start_rotate_skills_attack = threading.Thread(target=rotate_skills_attack)
-            th_start_rotate_skills_attack.start()
-
-            event_supplies = threading.Event()
-            th_supplies = threading.Thread(target=manager_supplies_rp, args=(event_supplies,)) # pq ta em outro arquivo tem q usar o args
-            th_supplies.start()
-
-
-            event_cacarecos =  threading.Event()
-            th_cacarecos = threading.Thread(target=manager_cacarecos, args=(event_cacarecos,)) # pq ta em outro arquivo tem q usar o args
-            th_cacarecos.start()
+            thread_manager.create_thread('rotate_skills_attack', rotate_skills_attack)
+            thread_manager.create_thread('manager_supplies_rp', manager_supplies_rp, should_be_stopped=False)
+            thread_manager.create_thread('manager_cacarecos', manager_cacarecos, should_be_stopped=False)
         else:
             running = False
-            logger.info("parando rotacao de skills (healing hp / mp and other things will continue)")
-            
-            event_rotate_skills.set() #desabilita a rotacao de skills
-            # life / mana should always be monitored
-            #event_supplies.set() # desabilitia o monitoring de vida e mana
-
-            th_start_rotate_skills_attack.join()
-            #th_supplies.join()
-
-
-            #th_cacarecos.join() # desabilita os cacarecos
-            event_cacarecos.set()
+            logger.info("parando o bot (algumas coisas podem continuar rodando, por exemplo healing)")
+            thread_manager.stop_all_threads()
+            logger.info("Bot parado")
 
 logger.info("Bot is ready, press 'f' to start or 'delete' to exit")
 
