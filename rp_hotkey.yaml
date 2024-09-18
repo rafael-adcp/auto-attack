@@ -1,0 +1,26 @@
+ring_default: "4"
+necklace_default: "7"
+
+light_heal: "f1"
+big_heal: "f2"
+
+mana_potion: "f4"
+ultimate_spirit_potion: "f5"
+
+ssa: "6"
+might_ring: "5"
+
+amp_res: "g"
+mas_san: "F3"
+rune_to_use: "F6"
+
+mana_pct_for_energy_ring: 30
+
+# esse cara tem q sempre ser abaixo do ssa e might ring
+# pq a mana suga bonito
+hp_pct_for_energy_ring: 50
+
+energy_ring: "3"
+
+quiver_been_used: "alicorn"
+equip_more_arrows: "num7"

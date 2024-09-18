@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Literal
 
-from fill_class_from_json import fill_class_from_json
+from fill_class_from_yaml import fill_class_from_yaml
 from config.general_config import get_general_config
 
 # PS hotkeys CANNOT BE INT, THEY NEED TO BE STR OTHERWISE PYGUI WILL ERROR
@@ -59,13 +59,13 @@ class MasterSorcerer(DefaultHotkey):
 
 def get_paladin_hotkey_config():
     
-    return fill_class_from_json(Paladin, 'rp_hotkey.json')
+    return fill_class_from_yaml(Paladin, 'rp_hotkey.json')
 
 def get_ek_hotkey_config():
-    return fill_class_from_json(Paladin, 'ek_hotkey.json')
+    return fill_class_from_yaml(Paladin, 'ek_hotkey.json')
 
 def get_ms_hotkey_config():
-    return fill_class_from_json(Paladin, 'ms_hotkey.json')
+    return fill_class_from_yaml(Paladin, 'ms_hotkey.json')
 
 
 def get_current_vocation_in_use_hotkey():
