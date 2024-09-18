@@ -11,6 +11,13 @@ Make sure you have these installed before:
 - git
 - python 3.10.11 or higher
 
+Used for OCR
+isntall teseract: https://github.com/UB-Mannheim/tesseract/wiki
+https://stackoverflow.com/questions/46140485/tesseract-installation-in-windows
+
+teseract
+https://codetoprosper.com/tesseract-ocr-for-windows/#google_vignette
+
 ```
 > git clone https://github.com/rafael-adcp/auto-attack.git
 > cd auto-attack
