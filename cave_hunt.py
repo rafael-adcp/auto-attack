@@ -5,7 +5,7 @@ pyautogui.useImageNotFoundException(False) # caso pyauto gui n ache n gera excep
 
 import threading
 
-from vida_mana import manager_supplies_rp
+from vida_mana import manager_hp_and_mp
 from rotacao_skills import rotate_skills_attack
 from cacarecos import manager_cacarecos
 
@@ -42,7 +42,7 @@ def key_code(key):
             th_start_rotate_skills_attack.start()
 
             event_supplies = threading.Event()
-            th_supplies = threading.Thread(target=manager_supplies_rp, args=(event_supplies,)) # pq ta em outro arquivo tem q usar o args
+            th_supplies = threading.Thread(target=manager_hp_and_mp, args=(event_supplies,)) # pq ta em outro arquivo tem q usar o args
             th_supplies.start()
 
             event_cacarecos =  threading.Event()

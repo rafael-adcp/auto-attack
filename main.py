@@ -7,7 +7,7 @@ from log import get_logger
 logger = get_logger(__name__)
 
 # anything that depends on screen poisition needs to be here, aka after the data is populated on previous step
-from vida_mana import manager_supplies_rp, manager_ssa, manager_might_ring
+from vida_mana import manager_hp_and_mp, manager_ring, manager_necklace
 from rotacao_skills import rotate_skills_attack
 from cacarecos import manager_cacarecos
 
@@ -27,10 +27,11 @@ def key_code(key):
             logger.info("Starting bot")
             running = True
             thread_manager.create_thread('rotate_skills_attack', rotate_skills_attack)
-            thread_manager.create_thread('manager_supplies_rp', manager_supplies_rp, should_be_stopped=False)
-            thread_manager.create_thread('manager_cacarecos', manager_cacarecos, should_be_stopped=False)
-            thread_manager.create_thread('manager_ssa', manager_ssa)
-            thread_manager.create_thread('manager_might_ring', manager_might_ring)
+            thread_manager.create_thread('manager_hp_and_mp', manager_hp_and_mp, should_be_stopped=False) # this monitor hp and mp therefore it should never be stopped
+            thread_manager.create_thread('manager_cacarecos', manager_cacarecos)
+            
+            thread_manager.create_thread('manager_ring', manager_ring)
+            thread_manager.create_thread('manager_necklace', manager_necklace)
         else:
             running = False
             logger.info("parando o bot (algumas coisas podem continuar rodando, por exemplo healing)")

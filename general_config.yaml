@@ -1,15 +1,15 @@
 
 vocation_been_used: paladin
-hp_pct_to_use_light_heal: 95
+hp_pct_to_use_light_heal: 97
 
 # tava 85 subi pra 90
-hp_pct_to_use_big_heal: 90
+hp_pct_to_use_big_heal: 95
 
 
 
 # qndo for hunt assada
 #hp_pct_to_pot_life: 85
-hp_pct_to_pot_life: 60
+hp_pct_to_pot_life: 70
 
 # pra hunt assada pode deixar em 70
 mana_pct_to_use_pot: 60

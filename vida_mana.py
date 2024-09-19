@@ -23,58 +23,16 @@ LIFE_COLOR = positions_cache_table.data[PossibleRegions.LIFE_COLOR.name]
 MANA_COLOR = positions_cache_table.data[PossibleRegions.MANA_COLOR.name]
 
 
-def manager_supplies_rp(event):
+def manager_hp_and_mp(event):
     while not event.is_set():
         if event.is_set():
             return
-        
-        #qndo da caca ele sobe o energy, entao dps q tiver safe volta o prisma e tb pode swapar ssa / might ring
-        if pixel_match_color(LIFE_REGION, 80, LIFE_COLOR):
-            if pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.99, region=EQUIPS_REGION) != None:
-                logger.info("tinha dado bosta ne amiguinho, agora q ta tudo bem vou tirar o energy ring e voltar pro prismatic")
-                pyautogui.press(current_vocation_in_use_hotkey.ring_default)
-
-            if general_config.vocation_been_used == constants.Vocation.PALADIN.value:
-                is_missing_necklace = pyautogui.locateOnScreen('imgs/no_necklace_equipped.png', confidence=0.99, region=EQUIPS_REGION)
-
-                if is_missing_necklace != None:
-                    logger.info("tava sem neck, vai colocar o default")
-                    pyautogui.press(current_vocation_in_use_hotkey.necklace_default)
-                    pyautogui.sleep(0.7)
-
-                is_missing_ring = pyautogui.locateOnScreen('imgs/no_ring_equipped.png', confidence=0.99, region=EQUIPS_REGION)
-                
-                if is_missing_ring != None:
-                    logger.info("tava sem ring, vai colocar o default")
-                    pyautogui.press(current_vocation_in_use_hotkey.ring_default)
-                    pyautogui.sleep(0.7)
-
-            
-            # if general_config.vocation_been_used == constants.Vocation.MS.value and pyautogui.locateOnScreen('imgs/utamo_vita.png', confidence=0.98, region=EQUIPS_REGION):
-            #     logger.info("vai tirar o utamo") #REVISIT:: i died bkz o this......
-            #     pyautogui.press(current_vocation_in_use_hotkey.remove_utamo_vita)
-
         
         if not pixel_match_color(LIFE_REGION, general_config.hp_pct_to_use_big_heal, LIFE_COLOR): # BIG HEAL
             pyautogui.press(current_vocation_in_use_hotkey.big_heal) 
         
         elif not pixel_match_color(LIFE_REGION, general_config.hp_pct_to_use_light_heal, LIFE_COLOR): # LIGHT HEAL
             pyautogui.press(current_vocation_in_use_hotkey.light_heal)
-
-        # paladin using energy ring
-        if general_config.vocation_been_used == constants.Vocation.PALADIN.value:
-                # life is <= X%
-                # have at least X% mana
-                # is not wearing energy ring
-                if (
-                    not pixel_match_color(LIFE_REGION, current_vocation_in_use_hotkey.hp_pct_for_energy_ring, LIFE_COLOR) 
-                    and pixel_match_color(MANA_REGION, current_vocation_in_use_hotkey.mana_pct_for_energy_ring, MANA_COLOR) 
-                    and not pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.9, region=EQUIPS_REGION)
-                ):
-                    # apenas swapa pro energy ring se tiver mana, pq se a mana tiver baixa vai da bosta
-                    logger.info("deu caca, vou subir o energy ring")
-                    pyautogui.press(current_vocation_in_use_hotkey.energy_ring)
-                    pyautogui.sleep(0.2)            
 
 
         if not pixel_match_color(LIFE_REGION, general_config.hp_pct_to_pot_life, LIFE_COLOR):
@@ -99,7 +57,57 @@ def manager_supplies_rp(event):
 
 EQUIP_ITEM_SLEEP = 0.4
 
-def manager_ssa(event):
+def manager_ring(event):
+    while not event.is_set():
+        if event.is_set():
+            return
+        
+        #low hp = equip might ring
+        if not pixel_match_color(LIFE_REGION, general_config.hp_pct_to_use_might_ring, LIFE_COLOR):
+            if not pyautogui.locateOnScreen('imgs/might_ring_equipped.png', confidence=0.9, region=EQUIPS_REGION):
+                pyautogui.press(current_vocation_in_use_hotkey.might_ring)
+                logger.info("olha o anel")
+                pyautogui.sleep(EQUIP_ITEM_SLEEP)
+
+        # might ring equipped or missing ring or energy ring, and high hp, move to default ring
+        elif pixel_match_color(LIFE_REGION, general_config.hp_pct_to_pot_life, LIFE_COLOR):
+            migh_ring_equipped = pyautogui.locateOnScreen('imgs/might_ring_equipped.png', confidence=0.9, region=EQUIPS_REGION)
+            is_missing_ring = pyautogui.locateOnScreen('imgs/no_ring_equipped.png', confidence=0.99, region=EQUIPS_REGION)
+            
+            #qndo da caca ele sobe o energy, entao dps q tiver safe volta o ring default
+            energy_ring_equipped = pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.99, region=EQUIPS_REGION)
+            
+            #TODO aqui verificar se for paladin e se o alicorn ring tiver acabado pode swapar ele pra outra coisa tb
+
+            if migh_ring_equipped != None or is_missing_ring != None or energy_ring_equipped != None:
+                pyautogui.press(current_vocation_in_use_hotkey.ring_default)
+                
+                if migh_ring_equipped != None:
+                    logger.info("tirando might ring")
+                elif is_missing_ring != None:
+                    logger.info("vai equipar ring default")
+                elif energy_ring_equipped != None:
+                    logger.info("tinha dado bosta ne amiguinho, agora q ta tudo bem vou tirar o energy ring e voltar pro prismatic")
+                pyautogui.sleep(EQUIP_ITEM_SLEEP)
+
+
+        # paladin using energy ring
+        if general_config.vocation_been_used == constants.Vocation.PALADIN.value:
+                # life is <= X%
+                # have at least X% mana
+                # is not wearing energy ring
+                if (
+                    not pixel_match_color(LIFE_REGION, current_vocation_in_use_hotkey.hp_pct_for_energy_ring, LIFE_COLOR) 
+                    and pixel_match_color(MANA_REGION, current_vocation_in_use_hotkey.mana_pct_for_energy_ring, MANA_COLOR) 
+                    and not pyautogui.locateOnScreen('imgs/energy_ring.png', confidence=0.9, region=EQUIPS_REGION)
+                ):
+                    # apenas swapa pro energy ring se tiver mana, pq se a mana tiver baixa vai da bosta
+                    logger.info("deu caca, vou subir o energy ring")
+                    pyautogui.press(current_vocation_in_use_hotkey.energy_ring)
+                    pyautogui.sleep(0.2)
+
+
+def manager_necklace(event):
     while not event.is_set():
         if event.is_set():
             return
@@ -109,23 +117,18 @@ def manager_ssa(event):
                 pyautogui.press(current_vocation_in_use_hotkey.ssa)
                 logger.info("olha o amuleto")
                 pyautogui.sleep(EQUIP_ITEM_SLEEP)
-        elif pyautogui.locateOnScreen('imgs/ssa_equipped.png', confidence=0.9, region=EQUIPS_REGION):
-            pyautogui.press(current_vocation_in_use_hotkey.necklace_default)
-            logger.info("voltando pro amuleto padrao")
-            pyautogui.sleep(EQUIP_ITEM_SLEEP)
-
-def manager_might_ring(event):
-    while not event.is_set():
-        if event.is_set():
-            return
-
-        if not pixel_match_color(LIFE_REGION, general_config.hp_pct_to_use_might_ring, LIFE_COLOR):
-            if not pyautogui.locateOnScreen('imgs/might_ring_equipped.png', confidence=0.9, region=EQUIPS_REGION):
-                pyautogui.press(current_vocation_in_use_hotkey.might_ring)
-                logger.info("olha o anel")
+        elif pixel_match_color(LIFE_REGION, general_config.hp_pct_to_pot_life, LIFE_COLOR):
+            ssa_equipped = pyautogui.locateOnScreen('imgs/ssa_equipped.png', confidence=0.9, region=EQUIPS_REGION)
+            is_missing_necklace = pyautogui.locateOnScreen('imgs/no_necklace_equipped.png', confidence=0.99, region=EQUIPS_REGION)
+            
+            
+            #TODO: aqui verificar se o pendulet ou o sleepshawl tiver acabado trocar pro amuleto padrao
+            #TODO: aqui verificar se o alicorn ring (se um dia eu tiver) tiver acabado, trocar pro ring padrao
+            
+            if is_missing_necklace != None or ssa_equipped != None:
+                pyautogui.press(current_vocation_in_use_hotkey.necklace_default)
+                if is_missing_necklace != None:
+                    logger.info("vai equipar amuleto default")
+                elif ssa_equipped != None:
+                    logger.info("tirando ssa")
                 pyautogui.sleep(EQUIP_ITEM_SLEEP)
-        elif pyautogui.locateOnScreen('imgs/might_ring_equipped.png', confidence=0.9, region=EQUIPS_REGION):
-            pyautogui.press(current_vocation_in_use_hotkey.ring_default)
-            logger.info("voltando pro anel padrao")
-            pyautogui.sleep(EQUIP_ITEM_SLEEP)
-        

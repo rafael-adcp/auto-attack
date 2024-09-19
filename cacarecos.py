@@ -32,9 +32,6 @@ def manager_cacarecos(event):
                 pyautogui.press(current_vocation_hotkeys.equip_more_arrows)
                 did_something = True
 
-            #TODO: aqui verificar se o pendulet ou o sleepshawl tiver acabado trocar pro amuleto padrao
-            #TODO: aqui verificar se o alicorn ring (se um dia eu tiver) tiver acabado, trocar pro ring padrao
-
         #mover esses cacarecos pra uma outra thread, isso aqui n deveria atrapalhar a rotacao de skill
         #apenas come qndo o icone de fome aparecer, evitar ficar spamando
         if pyautogui.locateOnScreen('imgs/starving.png', confidence=0.8, region=EQUIPS_REGION):
@@ -50,7 +47,8 @@ def manager_cacarecos(event):
         
         # only casts haste when battle region is empty, this avoids hunts where mobs casts paralyze on you and you keep spamming utani hur
         # nor to mention for MS scenario haste is the same spell group as exori moe so this prevents race condition there
-        if pyautogui.locateOnScreen('imgs/battle_region_empty.png', confidence=0.8, region=positions_cache_table.data[PossibleRegions.BATTLE_REGION.name]) and not pyautogui.locateOnScreen('imgs/haste.png', confidence=0.95, region=EQUIPS_REGION):
+        if not pyautogui.locateOnScreen('imgs/haste.png', confidence=0.95, region=EQUIPS_REGION):
+            # pyautogui.locateOnScreen('imgs/battle_region_empty.png', confidence=0.8, region=positions_cache_table.data[PossibleRegions.BATTLE_REGION.name]) and
             pyautogui.press(general_config.haste)
             did_something = True
         
