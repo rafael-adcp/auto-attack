@@ -3,7 +3,7 @@ vocation_been_used: paladin
 hp_pct_to_use_light_heal: 97
 
 # tava 85 subi pra 90
-hp_pct_to_use_big_heal: 95
+hp_pct_to_use_big_heal: 85
 
 
 
@@ -20,9 +20,9 @@ food_to_eat: "0"
 utura_gran: "9"
 haste: "F10"
 
-hp_pct_to_use_ssa: 55
-hp_pct_to_use_might_ring: 55
+hp_pct_to_use_ssa: 60
+hp_pct_to_use_might_ring: 60
 
 # qndo for hunt assada: # pra sanguine eh 95!
-# hp_pct_to_use_ssa: 75
-# hp_pct_to_use_might_ring: 75
+#hp_pct_to_use_ssa: 75
+#hp_pct_to_use_might_ring: 75
